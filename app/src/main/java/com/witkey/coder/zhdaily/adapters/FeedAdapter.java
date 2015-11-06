@@ -1,6 +1,7 @@
 package com.witkey.coder.zhdaily.adapters;
 
 import android.content.Context;
+import android.content.Intent;
 import android.support.v7.widget.RecyclerView;
 import android.view.GestureDetector;
 import android.view.LayoutInflater;
@@ -10,9 +11,9 @@ import android.view.ViewGroup;
 import android.view.animation.Animation;
 import android.view.animation.AnimationUtils;
 import android.widget.TextView;
-import android.widget.Toast;
 import android.widget.ViewFlipper;
 
+import com.witkey.coder.zhdaily.ArticalActivity;
 import com.witkey.coder.zhdaily.R;
 import com.witkey.coder.zhdaily.models.Feed;
 import com.witkey.coder.zhdaily.models.ImageSlider;
@@ -89,14 +90,13 @@ public class FeedAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
             cardView.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View view) {
-                    Toast.makeText(ctx, "Hello", Toast.LENGTH_SHORT).show();
-//                    Intent intent = new Intent(mContext, FeedDetailActivity.class);
+                    Intent intent = new Intent(ctx, ArticalActivity.class);
 //                    Feed feed = dataset.get(cardView.getId());
 //                    Gson detail = new Gson();
 //                    CircleCache.put(R.string.k_cur_feed_user, feedClass.userId);
 //                    CircleCache.put(R.string.k_cur_feed, feedClass.feedId);
 //                    intent.putExtra(TO_FEED_DETAIL, detail.toJson(feedClass));
-//                    ctx.startActivity(intent);
+                    ctx.startActivity(intent);
                 }
             });
         }
