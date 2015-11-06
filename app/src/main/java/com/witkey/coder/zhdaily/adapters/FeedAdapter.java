@@ -2,9 +2,13 @@ package com.witkey.coder.zhdaily.adapters;
 
 import android.content.Context;
 import android.support.v7.widget.RecyclerView;
+import android.view.GestureDetector;
 import android.view.LayoutInflater;
+import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.animation.Animation;
+import android.view.animation.AnimationUtils;
 import android.widget.TextView;
 import android.widget.Toast;
 import android.widget.ViewFlipper;
@@ -12,6 +16,8 @@ import android.widget.ViewFlipper;
 import com.witkey.coder.zhdaily.R;
 import com.witkey.coder.zhdaily.models.Feed;
 import com.witkey.coder.zhdaily.models.ImageSlider;
+import com.witkey.coder.zhdaily.utils.FlingListener;
+import com.witkey.coder.zhdaily.utils.GestureListener;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -24,6 +30,8 @@ public class FeedAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
     private static final int TYPE_FEED = 1;
     private static final int TYPE_DATE = 2;
 
+    private static final int FLIPPER_INTERVAL = 5000;
+
     private List<Object> dataset = new ArrayList<>();
     private Context ctx;
 
@@ -31,12 +39,43 @@ public class FeedAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
         this.ctx = ctx;
     }
 
-    public class FlipperViewHolder extends RecyclerView.ViewHolder{
+    public class FlipperViewHolder extends RecyclerView.ViewHolder implements FlingListener {
         public final View flipperView;
+        private Animation.AnimationListener animationListener;
+        GestureListener gestureListener = new GestureListener();
+        final GestureDetector gd;
 
         public FlipperViewHolder(View v) {
             super(v);
             flipperView = v;
+            gestureListener.registeListener(this);
+            GestureDetector.SimpleOnGestureListener simpleOnGestureListener = gestureListener;
+            gd = new GestureDetector(ctx, simpleOnGestureListener);
+            v.setOnTouchListener(new View.OnTouchListener() {
+                @Override
+                public boolean onTouch(View v, MotionEvent event) {
+                    gd.onTouchEvent(event);
+                    return true;
+                }
+            });
+        }
+
+        @Override
+        public void doAnimation(int type) {
+            ViewFlipper v = ((ViewFlipper)flipperView);
+            if (type == 2) {
+                v.setInAnimation(AnimationUtils.loadAnimation(ctx, R.anim.left_in));
+                v.setOutAnimation(AnimationUtils.loadAnimation(ctx, R.anim.left_out));
+
+                v.getInAnimation().setAnimationListener(animationListener);
+                v.showNext();
+            } else {
+                v.setInAnimation(AnimationUtils.loadAnimation(ctx, R.anim.right_in));
+                v.setOutAnimation(AnimationUtils.loadAnimation(ctx, R.anim.right_out));
+
+                v.getInAnimation().setAnimationListener(animationListener);
+                v.showPrevious();
+            }
         }
     }
 
@@ -112,9 +151,9 @@ public class FeedAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
         } else if (holder instanceof FlipperViewHolder) {
             ArrayList<ImageSlider> imageSliders = (ArrayList<ImageSlider>)dataset.get(position);
             View v = ((FlipperViewHolder)holder).flipperView;
+            ViewFlipper viewFlipper = (ViewFlipper)v;
             ViewGroup parent = (ViewGroup)v.getParent();
 
-            ViewFlipper viewFlipper= (ViewFlipper)v.findViewById(R.id.head_flipper);
             for (ImageSlider imageSlider : imageSliders) {
                 View flipperChildView = LayoutInflater.from(ctx).inflate(R.layout.flipper_child_main, parent);
                 TextView childTextView = (TextView) flipperChildView.findViewById(R.id.flipperText);
@@ -122,6 +161,7 @@ public class FeedAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
 
                 viewFlipper.addView(flipperChildView);
             }
+            viewFlipper.setFlipInterval(FLIPPER_INTERVAL);
             viewFlipper.setAutoStart(true);
         }
     }
