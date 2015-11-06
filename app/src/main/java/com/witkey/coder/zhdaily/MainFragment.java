@@ -20,7 +20,7 @@ import java.util.ArrayList;
 public class MainFragment extends Fragment {
     private RecyclerView recyclerView;
     private FeedAdapter feedAdapter;
-    private ArrayList<Feed> feeds = new ArrayList<>();
+    private ArrayList<Object> dataStream = new ArrayList<>();
 
     public MainFragment() {
         // Required empty public constructor
@@ -33,13 +33,24 @@ public class MainFragment extends Fragment {
 
         View rootView = inflater.inflate(R.layout.fragment_main, container, false);
 
-        feeds.add(new Feed("1", "2", "3", "4", 1, true));
-        feeds.add(new Feed("1", "2", "3", "4", 1, true));
-        feeds.add(new Feed("1", "2", "3", "4", 1, true));
-        feeds.add(new Feed("1", "2", "3", "4", 1, true));
-        feeds.add(new Feed("1", "2", "3", "4", 1, true));
-        feeds.add(new Feed("1", "2", "3", "4", 1, true));
-        feeds.add(new Feed("1", "2", "3", "4", 1, true));
+        // 数据流第一位永远是“今日热闻”
+        dataStream.add(String.format("%s", "今日热闻"));
+        dataStream.add(new Feed("1", "2", "3", "4", 1, true));
+        dataStream.add(new Feed("1", "2", "3", "4", 1, true));
+        dataStream.add(new Feed("1", "2", "3", "4", 1, true));
+        dataStream.add(new Feed("1", "2", "3", "4", 1, true));
+        dataStream.add(new Feed("1", "2", "3", "4", 1, true));
+        dataStream.add(new Feed("1", "2", "3", "4", 1, true));
+        dataStream.add(new Feed("1", "2", "3", "4", 1, true));
+        // 此处插入时间
+        dataStream.add(String.format("%s %s", "11月4日", "星期三"));
+        dataStream.add(new Feed("1", "2", "3", "4", 1, true));
+        dataStream.add(new Feed("1", "2", "3", "4", 1, true));
+        dataStream.add(new Feed("1", "2", "3", "4", 1, true));
+        dataStream.add(new Feed("1", "2", "3", "4", 1, true));
+        dataStream.add(new Feed("1", "2", "3", "4", 1, true));
+        dataStream.add(new Feed("1", "2", "3", "4", 1, true));
+        dataStream.add(new Feed("1", "2", "3", "4", 1, true));
 
         // 设置 recycler view
         recyclerView = (RecyclerView) rootView.findViewById(R.id.main_view);
@@ -47,7 +58,7 @@ public class MainFragment extends Fragment {
         feedAdapter = new FeedAdapter(getActivity());
         recyclerView.setAdapter(feedAdapter);
 
-        feedAdapter.setDataset(feeds);
+        feedAdapter.setDataset(dataStream);
         feedAdapter.notifyDataSetChanged();
 
         return rootView;
