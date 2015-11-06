@@ -19,5 +19,6 @@
 
     <!--Date text view-->
     <dimen name="date_text_margin">12dp</dimen>
+    <dimen name="card_flipper_height">180dp</dimen>
 
 </resources>

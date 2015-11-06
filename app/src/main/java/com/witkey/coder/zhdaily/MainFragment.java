@@ -11,6 +11,7 @@ import android.view.ViewGroup;
 
 import com.witkey.coder.zhdaily.adapters.FeedAdapter;
 import com.witkey.coder.zhdaily.models.Feed;
+import com.witkey.coder.zhdaily.models.ImageSlider;
 
 import java.util.ArrayList;
 
@@ -33,7 +34,13 @@ public class MainFragment extends Fragment {
 
         View rootView = inflater.inflate(R.layout.fragment_main, container, false);
 
-        // 数据流第一位永远是“今日热闻”
+        ArrayList<ImageSlider> imageSliders = new ArrayList<>();
+        imageSliders.add(new ImageSlider("1", "1", "1", "1"));
+        imageSliders.add(new ImageSlider("1", "1", "2", "1"));
+        imageSliders.add(new ImageSlider("1", "1", "3", "1"));
+        dataStream.add(imageSliders);
+
+        // 数据流时间第一位是“今日热闻”
         dataStream.add(String.format("%s", "今日热闻"));
         dataStream.add(new Feed("1", "2", "3", "4", 1, true));
         dataStream.add(new Feed("1", "2", "3", "4", 1, true));
