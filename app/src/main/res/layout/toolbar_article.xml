@@ -11,7 +11,7 @@
         android:layout_height="match_parent"
         android:layout_marginRight="@dimen/article_toolbar_distance_mid"
         android:layout_marginEnd="@dimen/article_toolbar_distance_mid"
-        android:id="@+id/artical_share"
+        android:id="@+id/article_share"
         android:src="@drawable/ic_share_white_24dp"/>
 
     <ImageView
@@ -19,7 +19,7 @@
         android:layout_height="match_parent"
         android:layout_marginRight="@dimen/article_toolbar_distance_mid"
         android:layout_marginEnd="@dimen/article_toolbar_distance_mid"
-        android:id="@+id/artical_star"
+        android:id="@+id/article_star"
         android:src="@drawable/ic_favorite_border_white_24dp" />
 
     <TextView
@@ -27,7 +27,9 @@
         android:layout_height="match_parent"
         android:layout_marginRight="@dimen/article_toolbar_distance_mid"
         android:layout_marginEnd="@dimen/article_toolbar_distance_mid"
-        android:id="@+id/artical_comments"
+        android:gravity="center_vertical"
+        android:id="@+id/article_comments"
+        android:textColor="@color/white"
         android:drawableLeft="@drawable/ic_message_white_24dp"
         android:drawableStart="@drawable/ic_message_white_24dp"
         android:text="..."/>
@@ -37,7 +39,9 @@
         android:layout_height="match_parent"
         android:layout_marginRight="@dimen/article_toolbar_distance_mid"
         android:layout_marginEnd="@dimen/article_toolbar_distance_mid"
-        android:id="@+id/artical_likes"
+        android:gravity="center_vertical"
+        android:id="@+id/article_likes"
+        android:textColor="@color/white"
         android:drawableLeft="@drawable/ic_thumb_up_white_24dp"
         android:drawableStart="@drawable/ic_thumb_up_white_24dp"
         android:text="..."/>

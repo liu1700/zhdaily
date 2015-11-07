@@ -5,18 +5,21 @@ import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v7.app.ActionBar;
+import android.support.v7.app.ActionBar.LayoutParams;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
+import android.view.Gravity;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.view.View;
 
-public class ArticalActivity extends AppCompatActivity {
+public class ArticleActivity extends AppCompatActivity {
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_artical);
-        Toolbar toolbar = (Toolbar) findViewById(R.id.articalToolbar);
+        setContentView(R.layout.activity_article);
+        Toolbar toolbar = (Toolbar) findViewById(R.id.article_toolbar);
         toolbar.setCollapsible(true);
         setSupportActionBar(toolbar);
         // 设置文章页的toolbar，移除标题显示退回箭头
@@ -25,12 +28,15 @@ public class ArticalActivity extends AppCompatActivity {
         bar.setDisplayShowHomeEnabled(true);
         bar.setDisplayShowTitleEnabled(false);
 
-//        bar.setCustomView(R.layout.artical_toolbar, new ActionBar.LayoutParams(new La));
+        // 设置自定义的toolbar
+        View customBar = getLayoutInflater().inflate(R.layout.toolbar_article, null);
+        LayoutParams layoutParams = new LayoutParams(Gravity.END);
+        bar.setCustomView(customBar, layoutParams);
         bar.setDisplayShowCustomEnabled(true);
 
-        Fragment articalActivityFragment = new ArticalActivityFragment();
+        Fragment articalActivityFragment = new ArticleActivityFragment();
         FragmentManager fragmentManager = getSupportFragmentManager();
-        fragmentManager.beginTransaction().replace(R.id.artical_frame, articalActivityFragment).commit();
+        fragmentManager.beginTransaction().replace(R.id.article_frame, articalActivityFragment).commit();
     }
 
     @Override

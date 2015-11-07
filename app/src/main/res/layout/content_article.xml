@@ -1,0 +1,38 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    android:orientation="vertical"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+
+        <ImageView
+            android:id="@+id/article_head_image"
+            android:src="@mipmap/ic_launcher"
+            android:layout_width="fill_parent"
+            android:layout_height="fill_parent"
+            android:contentDescription="@string/article_head_image" />
+
+        <TextView
+            android:id="@+id/article_head_text"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="Hellooo"/>
+
+    </RelativeLayout>
+
+    <TextView
+        android:id="@+id/article_rich_text_view"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"/>
+
+    <Button
+        android:id="@+id/article_share_btn"
+        android:text="分享"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"/>
+
+</LinearLayout>

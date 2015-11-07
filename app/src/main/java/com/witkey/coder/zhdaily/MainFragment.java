@@ -11,15 +11,14 @@ import android.view.ViewGroup;
 
 import com.witkey.coder.zhdaily.adapters.FeedAdapter;
 import com.witkey.coder.zhdaily.models.Feed;
-import com.witkey.coder.zhdaily.models.ImageSlider;
+import com.witkey.coder.zhdaily.models.ImageFlipper;
 
 import java.util.ArrayList;
 
 /**
  * 主页内容Fragment
  */
-public class MainFragment extends Fragment {
-    private RecyclerView recyclerView;
+public class MainFragment extends BaseFragment {
     private FeedAdapter feedAdapter;
     private ArrayList<Object> dataStream = new ArrayList<>();
 
@@ -34,11 +33,11 @@ public class MainFragment extends Fragment {
 
         View rootView = inflater.inflate(R.layout.fragment_main, container, false);
 
-        ArrayList<ImageSlider> imageSliders = new ArrayList<>();
-        imageSliders.add(new ImageSlider("1", "1", "1", "1"));
-        imageSliders.add(new ImageSlider("1", "1", "2", "1"));
-        imageSliders.add(new ImageSlider("1", "1", "3", "1"));
-        dataStream.add(imageSliders);
+        ArrayList<ImageFlipper> imageFlippers = new ArrayList<>();
+        imageFlippers.add(new ImageFlipper("1", "1", "1", "1"));
+        imageFlippers.add(new ImageFlipper("1", "1", "2", "1"));
+        imageFlippers.add(new ImageFlipper("1", "1", "3", "1"));
+        dataStream.add(imageFlippers);
 
         // 数据流时间第一位是“今日热闻”
         dataStream.add(String.format("%s", "今日热闻"));
@@ -60,8 +59,8 @@ public class MainFragment extends Fragment {
         dataStream.add(new Feed("1", "2", "3", "4", 1, true));
 
         // 设置 recycler view
-        recyclerView = (RecyclerView) rootView.findViewById(R.id.main_view);
-        setRecyclerViewLayoutManager();
+        RecyclerView recyclerView = (RecyclerView) rootView.findViewById(R.id.main_view);
+        setRecyclerViewLayoutManager(recyclerView);
         feedAdapter = new FeedAdapter(getActivity());
         recyclerView.setAdapter(feedAdapter);
 
@@ -69,22 +68,5 @@ public class MainFragment extends Fragment {
         feedAdapter.notifyDataSetChanged();
 
         return rootView;
-    }
-
-
-    private void setRecyclerViewLayoutManager() {
-        int scrollPosition = 0;
-
-        // 使用 linear layout manager
-        RecyclerView.LayoutManager mLayoutManager = new LinearLayoutManager(getActivity());
-        recyclerView.setLayoutManager(mLayoutManager);
-
-        // 如果layout manager已经设定好, 则获取Adapter中第一个可见item的位置
-        if (recyclerView.getLayoutManager() != null) {
-            scrollPosition = ((LinearLayoutManager) recyclerView.getLayoutManager())
-                    .findFirstCompletelyVisibleItemPosition();
-        }
-        recyclerView.setLayoutManager(mLayoutManager);
-        recyclerView.scrollToPosition(scrollPosition);
     }
 }

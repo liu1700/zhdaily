@@ -16,4 +16,5 @@
     <string name="action_star">收藏</string>
     <string name="action_comment">评论</string>
     <string name="action_like">赞</string>
+    <string name="article_head_image">文章图片</string>
 </resources>

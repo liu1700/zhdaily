@@ -5,14 +5,14 @@
     android:layout_height="fill_parent">
 
     <ImageView
-        android:id="@+id/flipperImage"
+        android:id="@+id/flipper_image"
         android:src="@mipmap/ic_launcher"
         android:layout_width="fill_parent"
         android:layout_height="fill_parent"
         android:contentDescription="@string/flipper_image_placeholder" />
 
     <TextView
-        android:id="@+id/flipperText"
+        android:id="@+id/flipper_text"
         android:layout_width="match_parent"
         android:layout_height="wrap_content" />
 

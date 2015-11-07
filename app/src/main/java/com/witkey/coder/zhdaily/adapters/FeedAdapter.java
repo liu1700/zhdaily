@@ -13,15 +13,14 @@ import android.view.animation.AnimationUtils;
 import android.widget.TextView;
 import android.widget.ViewFlipper;
 
-import com.witkey.coder.zhdaily.ArticalActivity;
+import com.witkey.coder.zhdaily.ArticleActivity;
 import com.witkey.coder.zhdaily.R;
 import com.witkey.coder.zhdaily.models.Feed;
-import com.witkey.coder.zhdaily.models.ImageSlider;
+import com.witkey.coder.zhdaily.models.ImageFlipper;
 import com.witkey.coder.zhdaily.utils.FlingListener;
 import com.witkey.coder.zhdaily.utils.GestureListener;
 
 import java.util.ArrayList;
-import java.util.List;
 
 /**
  * FeedAdapter 填充首页feed流
@@ -33,13 +32,14 @@ public class FeedAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
 
     private static final int FLIPPER_INTERVAL = 5000;
 
-    private List<Object> dataset = new ArrayList<>();
+    private ArrayList<Object> dataset = new ArrayList<>();
     private Context ctx;
 
     public FeedAdapter(Context ctx) {
         this.ctx = ctx;
     }
 
+    // FlipperViewHolder 首页顶部的轮播
     public class FlipperViewHolder extends RecyclerView.ViewHolder implements FlingListener {
         public final View flipperView;
         private Animation.AnimationListener animationListener;
@@ -49,6 +49,7 @@ public class FeedAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
         public FlipperViewHolder(View v) {
             super(v);
             flipperView = v;
+            // 注册Flipper listener
             gestureListener.registeListener(this);
             GestureDetector.SimpleOnGestureListener simpleOnGestureListener = gestureListener;
             gd = new GestureDetector(ctx, simpleOnGestureListener);
@@ -63,6 +64,7 @@ public class FeedAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
 
         @Override
         public void doAnimation(int type) {
+            // 根据监听的滑动感应方向使用动画
             ViewFlipper v = ((ViewFlipper)flipperView);
             if (type == 2) {
                 v.setInAnimation(AnimationUtils.loadAnimation(ctx, R.anim.left_in));
@@ -90,7 +92,7 @@ public class FeedAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
             cardView.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View view) {
-                    Intent intent = new Intent(ctx, ArticalActivity.class);
+                    Intent intent = new Intent(ctx, ArticleActivity.class);
 //                    Feed feed = dataset.get(cardView.getId());
 //                    Gson detail = new Gson();
 //                    CircleCache.put(R.string.k_cur_feed_user, feedClass.userId);
@@ -137,7 +139,7 @@ public class FeedAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
     public void onBindViewHolder(RecyclerView.ViewHolder holder, int position) {
         if(dataset.isEmpty()) return;
 
-        // 根据holder种类进行数据的渲染预处理
+        // 根据holder种类进行数据的填充
         if (holder instanceof CardViewHolder) {
             Feed f = (Feed)dataset.get(position);
             View v = ((CardViewHolder)holder).cardView;
@@ -149,15 +151,16 @@ public class FeedAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
             date.setText((String)dataset.get(position));
 
         } else if (holder instanceof FlipperViewHolder) {
-            ArrayList<ImageSlider> imageSliders = (ArrayList<ImageSlider>)dataset.get(position);
+            ArrayList<ImageFlipper> imageFlippers = (ArrayList<ImageFlipper>)dataset.get(position);
             View v = ((FlipperViewHolder)holder).flipperView;
             ViewFlipper viewFlipper = (ViewFlipper)v;
             ViewGroup parent = (ViewGroup)v.getParent();
 
-            for (ImageSlider imageSlider : imageSliders) {
+            // 为每个flipper设置内容
+            for (ImageFlipper imageFlipper : imageFlippers) {
                 View flipperChildView = LayoutInflater.from(ctx).inflate(R.layout.flipper_child_main, parent);
-                TextView childTextView = (TextView) flipperChildView.findViewById(R.id.flipperText);
-                childTextView.setText(imageSlider.getTitle());
+                TextView childTextView = (TextView) flipperChildView.findViewById(R.id.flipper_text);
+                childTextView.setText(imageFlipper.getTitle());
 
                 viewFlipper.addView(flipperChildView);
             }
