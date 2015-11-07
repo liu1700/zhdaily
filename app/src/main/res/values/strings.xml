@@ -19,4 +19,6 @@
     <string name="article_head_image">文章图片</string>
     <string name="db_daily">dailydb</string>
     <string name="db_daily_map">db_map</string>
+    <string name="nav_header_main_collection">我的收藏</string>
+    <string name="nav_header_main_star">我的关注</string>
 </resources>

@@ -20,6 +20,11 @@
     <!--Date text view-->
     <dimen name="date_text_margin">12dp</dimen>
     <dimen name="card_flipper_height">180dp</dimen>
-    <dimen name="article_toolbar_distance_mid">14dp</dimen>
+    <dimen name="article_distance_mid">14dp</dimen>
+    <dimen name="article_distance_large">48dp</dimen>
+    <dimen name="article_head_height">200dp</dimen>
+    <dimen name="article_text_size_big">24sp</dimen>
+    <dimen name="article_text_size_small">8sp</dimen>
+    <dimen name="nav_circle_image_size">70dp</dimen>
 
 </resources>

@@ -61,7 +61,6 @@ public class ArticleActivity extends AppCompatActivity {
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
-        getMenuInflater().inflate(R.menu.menu_artical, menu);
         return true;
     }
 }

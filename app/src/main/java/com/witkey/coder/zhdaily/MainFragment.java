@@ -2,6 +2,8 @@ package com.witkey.coder.zhdaily;
 
 
 import android.os.Bundle;
+import android.os.Handler;
+import android.os.Looper;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -11,12 +13,15 @@ import android.widget.Toast;
 import com.android.volley.Response;
 import com.android.volley.VolleyError;
 import com.witkey.coder.zhdaily.adapters.FeedAdapter;
+import com.witkey.coder.zhdaily.db.CircleDB;
 import com.witkey.coder.zhdaily.models.Stories;
 import com.witkey.coder.zhdaily.models.Story;
 import com.witkey.coder.zhdaily.models.ImageFlipper;
 import com.witkey.coder.zhdaily.networking.Networking;
+import com.witkey.coder.zhdaily.utils.Tool;
 
 import java.util.ArrayList;
+import java.util.Iterator;
 
 /**
  * 主页内容Fragment
@@ -28,7 +33,6 @@ public class MainFragment extends BaseFragment {
     public MainFragment() {
         // Required empty public constructor
     }
-
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
@@ -42,45 +46,57 @@ public class MainFragment extends BaseFragment {
         imageFlippers.add(new ImageFlipper("1", "1", "3", "1"));
         dataStream.add(imageFlippers);
 
-//        // 数据流时间第一位是“今日热闻”
-//        dataStream.add(String.format("%s", "今日热闻"));
-//        dataStream.add(new Story("1", "2", "3", "4", 1, true));
-//        dataStream.add(new Story("1", "2", "3", "4", 1, true));
-//        dataStream.add(new Story("1", "2", "3", "4", 1, true));
-//        dataStream.add(new Story("1", "2", "3", "4", 1, true));
-//        dataStream.add(new Story("1", "2", "3", "4", 1, true));
-//        dataStream.add(new Story("1", "2", "3", "4", 1, true));
-//        dataStream.add(new Story("1", "2", "3", "4", 1, true));
-//        // 此处插入时间
-//        dataStream.add(String.format("%s %s", "11月4日", "星期三"));
-//        dataStream.add(new Story("1", "2", "3", "4", 1, true));
-//        dataStream.add(new Story("1", "2", "3", "4", 1, true));
-//        dataStream.add(new Story("1", "2", "3", "4", 1, true));
-//        dataStream.add(new Story("1", "2", "3", "4", 1, true));
-//        dataStream.add(new Story("1", "2", "3", "4", 1, true));
-//        dataStream.add(new Story("1", "2", "3", "4", 1, true));
-//        dataStream.add(new Story("1", "2", "3", "4", 1, true));
+        Handler handler = new Handler(Looper.getMainLooper());
+        // 启用线程从数据库中读取缓存好的数据流
+        handler.post(loadStoryStreamFromDB());
 
         // 设置 recycler view
         RecyclerView recyclerView = (RecyclerView) rootView.findViewById(R.id.main_view);
         setRecyclerViewLayoutManager(recyclerView);
         feedAdapter = new FeedAdapter(getActivity());
         recyclerView.setAdapter(feedAdapter);
-//
-//        feedAdapter.setDataset(dataStream);
-//        feedAdapter.notifyDataSetChanged();
 
         return rootView;
+    }
+
+    private Runnable loadStoryStreamFromDB() {
+         return new Runnable() {
+            @Override
+            public void run() {
+                // 迭代读取数据库
+                Iterator<String> iterator = CircleDB.getKeyIterator();
+                while (iterator.hasNext()) {
+                    String d = iterator.next();
+                    String date = Tool.toFormatDate(d);
+                    ArrayList<Story> storyArrayList = (ArrayList<Story>)CircleDB.read(d);
+                    if (storyArrayList != null) {
+                        dataStream.add(date);
+                        dataStream.addAll(storyArrayList);
+                    }
+                }
+                refresh();
+            }
+        };
+    }
+
+    public void refresh() {
+        if (dataStream.size() > 1) {
+            feedAdapter.setDataset(dataStream);
+            feedAdapter.notifyDataSetChanged();
+        } else {
+            updateStream(Tool.getTomorrowDate());
+        }
     }
 
     @Override
     public void onStart() {
         super.onStart();
-        updateStream(20151107);
+
+//        updateStream(Tool.getTomorrowDate());
     }
 
-    private void updateStream(int date) {
-        Networking.get(String.format("%s%d", Networking.FEED_STREAM, date), Stories.class, new Response.ErrorListener() {
+    private void updateStream(String date) {
+        Networking.get(String.format("%s%s", Networking.FEED_STREAM, date), Stories.class, new Response.ErrorListener() {
                     @Override
                     public void onErrorResponse(VolleyError error) {
                         Toast.makeText(DailyApp.getAppContext(), error.getMessage(), Toast.LENGTH_SHORT).show();
@@ -92,6 +108,7 @@ public class MainFragment extends BaseFragment {
                         ArrayList<Story> storyArrayList = stories.getStories();
 
                         dataStream.addAll(storyArrayList);
+                        CircleDB.write(stories.getDate(), storyArrayList);
                         feedAdapter.setDataset(dataStream);
                         feedAdapter.notifyDataSetChanged();
                     }

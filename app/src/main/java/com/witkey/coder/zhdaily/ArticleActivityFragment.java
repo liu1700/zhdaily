@@ -33,13 +33,9 @@ public class ArticleActivityFragment extends BaseFragment {
                              Bundle savedInstanceState) {
         View rootView = inflater.inflate(R.layout.fragment_article, container, false);
 
-        ArrayList<String> arrayList = new ArrayList<>();
-        arrayList.add("1");
-
+        // 获取文章id
         Intent intent = getActivity().getIntent();
         articleId = intent.getIntExtra(TO_ARTICLE, 0);
-
-//        dataStream.add(new Article("<h2>Title</h2><br><p>Description here</p>", "1", "2", "3", "4", "5", "6", 1, 2, arrayList));
 
         RecyclerView recyclerView = (RecyclerView) rootView.findViewById(R.id.article_view);
         setRecyclerViewLayoutManager(recyclerView);
@@ -64,7 +60,6 @@ public class ArticleActivityFragment extends BaseFragment {
         }, new Response.Listener() {
             @Override
             public void onResponse(Object response) {
-                Toast.makeText(DailyApp.getAppContext(), "E", Toast.LENGTH_SHORT).show();
                 Article article = (Article) response;
                 dataStream.add(article);
 

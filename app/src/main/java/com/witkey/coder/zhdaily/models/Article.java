@@ -45,4 +45,24 @@ public class Article {
     public String getBody() {
         return body;
     }
+
+    public ArrayList<String> getCss() {
+        return css;
+    }
+
+    public ArrayList<String> getJs() {
+        return js;
+    }
+
+    public String getImage() {
+        return image;
+    }
+
+    public String getTitle() {
+        return title;
+    }
+
+    public String getImageSource() {
+        return imageSource;
+    }
 }

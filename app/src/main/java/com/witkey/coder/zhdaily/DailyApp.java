@@ -3,7 +3,6 @@ package com.witkey.coder.zhdaily;
 import android.app.Application;
 import android.content.Context;
 
-import com.witkey.coder.zhdaily.db.CircleCache;
 import com.witkey.coder.zhdaily.db.CircleDB;
 
 /**
@@ -19,7 +18,6 @@ public class DailyApp extends Application {
         super.onCreate();
         this.setAppContext(getApplicationContext());
         CircleDB.init(getApplicationContext());
-        CircleCache.init(getApplicationContext());
     }
 
     public static Context getAppContext() {

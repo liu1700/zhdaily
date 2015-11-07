@@ -13,7 +13,6 @@ import android.view.animation.AnimationUtils;
 import android.widget.TextView;
 import android.widget.ViewFlipper;
 
-import com.google.gson.Gson;
 import com.witkey.coder.zhdaily.ArticleActivity;
 import com.witkey.coder.zhdaily.R;
 import com.witkey.coder.zhdaily.customviews.FadeInImageView;
@@ -28,16 +27,12 @@ import java.util.ArrayList;
 /**
  * FeedAdapter 填充首页feed流
  */
-public class FeedAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
+public class FeedAdapter extends BasicAdapter {
     private static final int TYPE_HEADER = 0;
     private static final int TYPE_FEED = 1;
     private static final int TYPE_DATE = 2;
     private static final int FLIPPER_INTERVAL = 5000;
     private static final String TO_ARTICLE = "TO_ARTICLE";
-
-
-    private ArrayList<Object> dataset = new ArrayList<>();
-    private Context ctx;
 
     public FeedAdapter(Context ctx) {
         this.ctx = ctx;
@@ -46,7 +41,6 @@ public class FeedAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
     // FlipperViewHolder 首页顶部的轮播
     public class FlipperViewHolder extends RecyclerView.ViewHolder implements FlingListener {
         public final View flipperView;
-        private Animation.AnimationListener animationListener;
         GestureListener gestureListener = new GestureListener();
         final GestureDetector gd;
 
@@ -73,16 +67,14 @@ public class FeedAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
             if (type == 2) {
                 v.setInAnimation(AnimationUtils.loadAnimation(ctx, R.anim.left_in));
                 v.setOutAnimation(AnimationUtils.loadAnimation(ctx, R.anim.left_out));
-
-                v.getInAnimation().setAnimationListener(animationListener);
                 v.showNext();
             } else {
                 v.setInAnimation(AnimationUtils.loadAnimation(ctx, R.anim.right_in));
                 v.setOutAnimation(AnimationUtils.loadAnimation(ctx, R.anim.right_out));
-
-                v.getInAnimation().setAnimationListener(animationListener);
                 v.showPrevious();
             }
+            v.setInAnimation(AnimationUtils.loadAnimation(ctx, R.anim.left_in));
+            v.setOutAnimation(AnimationUtils.loadAnimation(ctx, R.anim.left_out));
         }
     }
 
@@ -174,6 +166,8 @@ public class FeedAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
 
                 viewFlipper.addView(flipperChildView);
             }
+            viewFlipper.setInAnimation(AnimationUtils.loadAnimation(ctx, R.anim.left_in));
+            viewFlipper.setOutAnimation(AnimationUtils.loadAnimation(ctx, R.anim.left_out));
             viewFlipper.setFlipInterval(FLIPPER_INTERVAL);
             viewFlipper.setAutoStart(true);
         }
@@ -189,14 +183,5 @@ public class FeedAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
         } else {
             return TYPE_FEED;
         }
-    }
-
-    @Override
-    public int getItemCount() {
-        return dataset.size();
-    }
-
-    public void setDataset(ArrayList<Object> d) {
-        dataset = d;
     }
 }

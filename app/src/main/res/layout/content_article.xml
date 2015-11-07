@@ -6,33 +6,47 @@
     android:layout_height="match_parent">
 
     <RelativeLayout
-        android:layout_width="match_parent"
-        android:layout_height="match_parent">
+        android:layout_width="fill_parent"
+        android:layout_height="@dimen/article_head_height">
 
-        <ImageView
+        <com.witkey.coder.zhdaily.customviews.FadeInImageView
             android:id="@+id/article_head_image"
             android:src="@mipmap/ic_launcher"
             android:layout_width="fill_parent"
             android:layout_height="fill_parent"
+            android:scaleType="centerCrop"
             android:contentDescription="@string/article_head_image" />
 
         <TextView
             android:id="@+id/article_head_text"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:text="Hellooo"/>
+            android:textSize="@dimen/article_text_size_big"
+            android:textColor="@color/white"
+            android:layout_alignParentBottom="true"
+            android:layout_marginLeft="@dimen/article_distance_mid"
+            android:layout_marginStart="@dimen/article_distance_mid"
+            android:layout_marginBottom="@dimen/article_distance_large"
+            android:text="Title"/>
+
+        <TextView
+            android:id="@+id/article_image_source"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textSize="@dimen/article_text_size_small"
+            android:textColor="@color/white"
+            android:layout_alignParentBottom="true"
+            android:layout_alignParentEnd="true"
+            android:layout_alignParentRight="true"
+            android:layout_margin="@dimen/article_distance_mid"
+            android:text="Source"/>
 
     </RelativeLayout>
 
-    <TextView
+    <WebView
         android:id="@+id/article_rich_text_view"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"/>
-
-    <Button
-        android:id="@+id/article_share_btn"
-        android:text="分享"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"/>
+        android:layout_height="wrap_content">
+    </WebView>
 
 </LinearLayout>

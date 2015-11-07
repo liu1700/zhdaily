@@ -26,9 +26,8 @@ public class GestureListener extends GestureDetector.SimpleOnGestureListener imp
         } else if(e2.getX() - e1.getX() > FLING_DISTANCE) {
             notifyListener(TO_RIGHT);
             return true;
-        } else {
-            return false;
         }
+        return super.onFling(e1, e2, velocityX, velocityY);
     }
 
     @Override
