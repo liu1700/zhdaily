@@ -14,4 +14,12 @@ public class Stories {
         this.date = date;
         this.stories = stories;
     }
+
+    public String getDate() {
+        return date;
+    }
+
+    public ArrayList<Story> getStories() {
+        return stories;
+    }
 }

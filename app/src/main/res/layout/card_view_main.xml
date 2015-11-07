@@ -28,7 +28,7 @@
                 android:layout_weight=".70">
 
                 <TextView
-                    android:id="@+id/feedTitle"
+                    android:id="@+id/story_title"
                     android:textSize="@dimen/card_primary_text_size"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
@@ -36,23 +36,23 @@
                     />
 
                 <TextView
-                    android:id="@+id/feedTag"
+                    android:id="@+id/story_type"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_alignParentBottom="true"
                     android:textSize="@dimen/card_tag_text_size"
-                    android:text="@string/card_test_tag_text"/>
+                    android:text="@string/card_test_type_text"/>
 
             </RelativeLayout>
 
             <com.witkey.coder.zhdaily.customviews.FadeInImageView
-                android:id="@+id/feedThumbnail"
+                android:id="@+id/story_thumbnail"
                 android:layout_width="0dp"
                 android:layout_height="fill_parent"
                 android:layout_weight=".30"
                 android:layout_margin="@dimen/card_distance_small"
                 android:src="@mipmap/ic_launcher"
-                android:background="@color/blue50"/>
+                android:background="@color/white"/>
 
         </LinearLayout>
 

@@ -13,10 +13,13 @@ import android.view.animation.AnimationUtils;
 import android.widget.TextView;
 import android.widget.ViewFlipper;
 
+import com.google.gson.Gson;
 import com.witkey.coder.zhdaily.ArticleActivity;
 import com.witkey.coder.zhdaily.R;
+import com.witkey.coder.zhdaily.customviews.FadeInImageView;
 import com.witkey.coder.zhdaily.models.Story;
 import com.witkey.coder.zhdaily.models.ImageFlipper;
+import com.witkey.coder.zhdaily.networking.Networking;
 import com.witkey.coder.zhdaily.utils.FlingListener;
 import com.witkey.coder.zhdaily.utils.GestureListener;
 
@@ -29,8 +32,9 @@ public class FeedAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
     private static final int TYPE_HEADER = 0;
     private static final int TYPE_FEED = 1;
     private static final int TYPE_DATE = 2;
-
     private static final int FLIPPER_INTERVAL = 5000;
+    private static final String TO_ARTICLE = "TO_ARTICLE";
+
 
     private ArrayList<Object> dataset = new ArrayList<>();
     private Context ctx;
@@ -93,11 +97,9 @@ public class FeedAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
                 @Override
                 public void onClick(View view) {
                     Intent intent = new Intent(ctx, ArticleActivity.class);
-//                    Story feed = dataset.get(cardView.getId());
-//                    Gson detail = new Gson();
-//                    CircleCache.put(R.string.k_cur_feed_user, feedClass.userId);
-//                    CircleCache.put(R.string.k_cur_feed, feedClass.feedId);
-//                    intent.putExtra(TO_FEED_DETAIL, detail.toJson(feedClass));
+                    intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_NEW_TASK);
+                    Story story = (Story)dataset.get(cardView.getId());
+                    intent.putExtra(TO_ARTICLE, story.getId());
                     ctx.startActivity(intent);
                 }
             });
@@ -144,6 +146,14 @@ public class FeedAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
             Story f = (Story)dataset.get(position);
             View v = ((CardViewHolder)holder).cardView;
             v.setId(position);
+
+            TextView title = (TextView) v.findViewById(R.id.story_title);
+            TextView type = (TextView) v.findViewById(R.id.story_type);
+            FadeInImageView fadeInImageView = (FadeInImageView) v.findViewById(R.id.story_thumbnail);
+
+            title.setText(f.getTitle());
+            type.setText(String.format("%s %d", "类型:", f.getType()));
+            Networking.loadImage(f.getImages().get(0), fadeInImageView);
 
         } else if (holder instanceof DateTextViewHolder) {
             View v = ((DateTextViewHolder)holder).dateTextView;

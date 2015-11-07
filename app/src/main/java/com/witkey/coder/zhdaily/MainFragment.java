@@ -66,9 +66,9 @@ public class MainFragment extends BaseFragment {
         setRecyclerViewLayoutManager(recyclerView);
         feedAdapter = new FeedAdapter(getActivity());
         recyclerView.setAdapter(feedAdapter);
-
-        feedAdapter.setDataset(dataStream);
-        feedAdapter.notifyDataSetChanged();
+//
+//        feedAdapter.setDataset(dataStream);
+//        feedAdapter.notifyDataSetChanged();
 
         return rootView;
     }
@@ -88,7 +88,12 @@ public class MainFragment extends BaseFragment {
                 }, new Response.Listener() {
                     @Override
                     public void onResponse(Object response) {
-                        Toast.makeText(DailyApp.getAppContext(), "Hello", Toast.LENGTH_SHORT).show();
+                        Stories stories = (Stories) response;
+                        ArrayList<Story> storyArrayList = stories.getStories();
+
+                        dataStream.addAll(storyArrayList);
+                        feedAdapter.setDataset(dataStream);
+                        feedAdapter.notifyDataSetChanged();
                     }
                 }
 

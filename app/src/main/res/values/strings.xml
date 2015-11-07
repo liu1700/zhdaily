@@ -8,8 +8,8 @@
 
 <!-- TODO: Remove or change this placeholder text -->
     <string name="hello_blank_fragment">Hello blank fragment</string>
-    <string name="card_test_title_text">如果上天再给我一次机会我也看不懂麦克斯韦方程组</string>
-    <string name="card_test_tag_text">用户推荐日报</string>
+    <string name="card_test_title_text">title placeholder</string>
+    <string name="card_test_type_text">type placeholder</string>
     <string name="flipper_image_placeholder">flipperBackground</string>
     <string name="title_activity_artical">ArticalActivity</string>
     <string name="action_share">分享</string>
