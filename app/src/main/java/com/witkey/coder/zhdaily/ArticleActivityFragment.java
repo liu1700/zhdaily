@@ -2,10 +2,13 @@ package com.witkey.coder.zhdaily;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.support.v7.app.ActionBar;
+import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import com.android.volley.Response;
@@ -32,7 +35,11 @@ public class ArticleActivityFragment extends BaseFragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         View rootView = inflater.inflate(R.layout.fragment_article, container, false);
+        ActionBar bar = ((AppCompatActivity) getActivity()).getSupportActionBar();
+        View barView = bar.getCustomView();
 
+//        TextView comments = (TextView) barView.findViewById(R.id.article_comments);
+//        comments.setText("1");
         // 获取文章id
         Intent intent = getActivity().getIntent();
         articleId = intent.getIntExtra(TO_ARTICLE, 0);

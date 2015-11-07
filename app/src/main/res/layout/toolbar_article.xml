@@ -23,7 +23,7 @@
         android:src="@drawable/ic_favorite_border_white_24dp" />
 
     <TextView
-        android:layout_width="match_parent"
+        android:layout_width="wrap_content"
         android:layout_height="match_parent"
         android:layout_marginRight="@dimen/article_distance_mid"
         android:layout_marginEnd="@dimen/article_distance_mid"
@@ -35,7 +35,7 @@
         android:text="..."/>
 
     <TextView
-        android:layout_width="match_parent"
+        android:layout_width="wrap_content"
         android:layout_height="match_parent"
         android:layout_marginRight="@dimen/article_distance_mid"
         android:layout_marginEnd="@dimen/article_distance_mid"
