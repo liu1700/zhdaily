@@ -15,7 +15,7 @@ import android.widget.ViewFlipper;
 
 import com.witkey.coder.zhdaily.ArticleActivity;
 import com.witkey.coder.zhdaily.R;
-import com.witkey.coder.zhdaily.models.Feed;
+import com.witkey.coder.zhdaily.models.Story;
 import com.witkey.coder.zhdaily.models.ImageFlipper;
 import com.witkey.coder.zhdaily.utils.FlingListener;
 import com.witkey.coder.zhdaily.utils.GestureListener;
@@ -93,7 +93,7 @@ public class FeedAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
                 @Override
                 public void onClick(View view) {
                     Intent intent = new Intent(ctx, ArticleActivity.class);
-//                    Feed feed = dataset.get(cardView.getId());
+//                    Story feed = dataset.get(cardView.getId());
 //                    Gson detail = new Gson();
 //                    CircleCache.put(R.string.k_cur_feed_user, feedClass.userId);
 //                    CircleCache.put(R.string.k_cur_feed, feedClass.feedId);
@@ -141,7 +141,7 @@ public class FeedAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
 
         // 根据holder种类进行数据的填充
         if (holder instanceof CardViewHolder) {
-            Feed f = (Feed)dataset.get(position);
+            Story f = (Story)dataset.get(position);
             View v = ((CardViewHolder)holder).cardView;
             v.setId(position);
 

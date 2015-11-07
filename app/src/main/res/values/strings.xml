@@ -17,4 +17,6 @@
     <string name="action_comment">评论</string>
     <string name="action_like">赞</string>
     <string name="article_head_image">文章图片</string>
+    <string name="db_daily">dailydb</string>
+    <string name="db_daily_map">db_map</string>
 </resources>
