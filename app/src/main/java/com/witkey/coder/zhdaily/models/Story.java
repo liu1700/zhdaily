@@ -14,14 +14,14 @@ public class Story implements Serializable {
     private String gaPrefix;
     private String title;
     private ArrayList<String> images;
-    private int tyoe;
+    private int type;
     private boolean multipic;
 
     public Story(int id, String title, ArrayList<String> images, int type, boolean multipic) {
         this.id = id;
         this.title = title;
         this.images = images;
-        this.tyoe = type;
+        this.type = type;
         this.multipic = multipic;
     }
 
@@ -38,7 +38,7 @@ public class Story implements Serializable {
     }
 
     public int getType() {
-        return tyoe;
+        return type;
     }
 
     public boolean isMultipic() {

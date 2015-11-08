@@ -45,7 +45,6 @@ public class CircleDB extends Service {
                 .makeOrGet();
     }
 
-    // For persistent db
     public static void write(String key, Object value) {
         try {
             map.put(key, serialize(value));
@@ -73,28 +72,28 @@ public class CircleDB extends Service {
 
     // 获取Key迭代器
     public static Iterator<String> getKeyIterator() {
-        NavigableSet<String> set = map.keySet();
+        NavigableSet<String> set = map.descendingKeySet();
         return set.iterator();
     }
 
-    @Override
-    public void onTaskRemoved(Intent rootIntent) {
-        // 确保数据库在app关闭时也同时关闭
-        db.close();
-        super.onTaskRemoved(rootIntent);
-    }
-
-    public static byte[] serialize(Object obj) throws IOException {
+    static byte[] serialize(Object obj) throws IOException {
         ByteArrayOutputStream out = new ByteArrayOutputStream();
         ObjectOutputStream os = new ObjectOutputStream(out);
         os.writeObject(obj);
         return out.toByteArray();
     }
-    public static Object deserialize(byte[] data) throws IOException, ClassNotFoundException {
+    static Object deserialize(byte[] data) throws IOException, ClassNotFoundException {
         if(data == null) return null;
         ByteArrayInputStream in = new ByteArrayInputStream(data);
         ObjectInputStream is = new ObjectInputStream(in);
         return is.readObject();
+    }
+
+    @Override
+    public void onDestroy() {
+        super.onDestroy();
+        // 确保数据库在app关闭时也同时关闭
+        db.close();
     }
 
     @Nullable

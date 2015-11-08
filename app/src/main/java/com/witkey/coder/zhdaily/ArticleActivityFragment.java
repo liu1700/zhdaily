@@ -64,7 +64,7 @@ public class ArticleActivityFragment extends BaseFragment {
             @Override
             public void run() {
                 retrieveArticle(articleId);
-                retrieveArticalExtra(articleId);
+                retrieveArticleExtra(articleId);
             }
         });
         articleThread.start();
@@ -88,7 +88,7 @@ public class ArticleActivityFragment extends BaseFragment {
         });
     }
 
-    private void retrieveArticalExtra(int id) {
+    private void retrieveArticleExtra(int id) {
         Networking.get(String.format("%s%d", Networking.ARTICLE_DETAIL_EXTRA, id), ArticleExtra.class, new Response.ErrorListener() {
             @Override
             public void onErrorResponse(VolleyError error) {
@@ -103,4 +103,15 @@ public class ArticleActivityFragment extends BaseFragment {
             }
         });
     }
+
+    @Override
+    public void onBottom() {
+
+    }
+
+    @Override
+    protected void onDeepIn() {
+
+    }
+
 }

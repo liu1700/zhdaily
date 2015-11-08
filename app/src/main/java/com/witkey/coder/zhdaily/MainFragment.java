@@ -4,6 +4,7 @@ package com.witkey.coder.zhdaily;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Looper;
+import android.support.design.widget.FloatingActionButton;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -29,6 +30,9 @@ import java.util.Iterator;
 public class MainFragment extends BaseFragment {
     private FeedAdapter feedAdapter;
     private ArrayList<Object> dataStream = new ArrayList<>();
+    private static String oldest;
+    private FloatingActionButton backToTop;
+    private RecyclerView recyclerView;
 
     public MainFragment() {}
 
@@ -50,10 +54,13 @@ public class MainFragment extends BaseFragment {
         handler.post(loadStoryStream());
 
         // 设置 recycler view
-        RecyclerView recyclerView = (RecyclerView) rootView.findViewById(R.id.main_view);
+        recyclerView = (RecyclerView) rootView.findViewById(R.id.main_view);
         setRecyclerViewLayoutManager(recyclerView);
         feedAdapter = new FeedAdapter(getActivity());
         recyclerView.setAdapter(feedAdapter);
+
+        backToTop = (FloatingActionButton) getActivity().findViewById(R.id.back_to_top);
+        backToTop.setVisibility(View.GONE);
 
         return rootView;
     }
@@ -64,26 +71,22 @@ public class MainFragment extends BaseFragment {
             public void run() {
                 // 迭代读取数据库
                 Iterator<String> iterator = CircleDB.getKeyIterator();
+                if (!iterator.hasNext()) {
+                    updateStream(Tool.getTomorrow());
+                    return;
+                }
                 while (iterator.hasNext()) {
                     String d = iterator.next();
                     String date = Tool.toFormatDate(d);
                     ArrayList<Story> storyArrayList = (ArrayList<Story>)CircleDB.read(d);
-                    if (storyArrayList != null) {
-                        dataStream.add(date);
-                        dataStream.addAll(storyArrayList);
-                    }
+                    if (storyArrayList == null) return;
+                    oldest = d;
+                    dataStream.add(date);
+                    dataStream.addAll(storyArrayList);
                 }
-                refresh();
+                update();
             }
         };
-    }
-
-    public void refresh() {
-        if (dataStream.size() > 1) {
-            update();
-        } else {
-            updateStream(Tool.getTomorrowDate());
-        }
     }
 
     private void updateStream(String date) {
@@ -99,6 +102,7 @@ public class MainFragment extends BaseFragment {
                         ArrayList<Story> storyArrayList = stories.getStories();
 
                         String date = Tool.toFormatDate(stories.getDate());
+                        oldest = stories.getDate();
                         dataStream.add(date);
                         dataStream.addAll(storyArrayList);
                         update();
@@ -113,4 +117,27 @@ public class MainFragment extends BaseFragment {
         feedAdapter.setDataset(dataStream);
         feedAdapter.notifyDataSetChanged();
     }
+
+    @Override
+    public void onBottom() {
+        updateStream(oldest);
+    }
+
+    @Override
+    public void onDeepIn() {
+        backToTop.setVisibility(View.VISIBLE);
+        backToTop.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                recyclerView.scrollToPosition(0);
+                backToTop.setVisibility(View.GONE);
+            }
+        });
+    }
+
+//    @Override
+//    public void onChangeDate(String date) {
+//        super.onChangeDate(date);
+//
+//    }
 }

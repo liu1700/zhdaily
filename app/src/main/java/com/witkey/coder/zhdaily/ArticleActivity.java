@@ -13,10 +13,7 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 
-import com.witkey.coder.zhdaily.networking.Networking;
-
 public class ArticleActivity extends AppCompatActivity {
-    private ActionBar bar;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -26,20 +23,22 @@ public class ArticleActivity extends AppCompatActivity {
         toolbar.setCollapsible(true);
         setSupportActionBar(toolbar);
         // 设置文章页的toolbar，移除标题显示退回箭头
-        bar = getSupportActionBar();
-        bar.setDisplayHomeAsUpEnabled(true);
-        bar.setDisplayShowHomeEnabled(true);
-        bar.setDisplayShowTitleEnabled(false);
+        ActionBar bar = getSupportActionBar();
+        if (bar != null) {
+            bar.setDisplayHomeAsUpEnabled(true);
+            bar.setDisplayShowHomeEnabled(true);
+            bar.setDisplayShowTitleEnabled(false);
 
-        // 设置自定义的toolbar
-        View customBar = getLayoutInflater().inflate(R.layout.toolbar_article, null);
-        LayoutParams layoutParams = new LayoutParams(Gravity.END);
-        bar.setCustomView(customBar, layoutParams);
-        bar.setDisplayShowCustomEnabled(true);
+            // 设置自定义的toolbar
+            View customBar = getLayoutInflater().inflate(R.layout.toolbar_article, null);
+            LayoutParams layoutParams = new LayoutParams(Gravity.END);
+            bar.setCustomView(customBar, layoutParams);
+            bar.setDisplayShowCustomEnabled(true);
+        }
 
-        Fragment articalActivityFragment = new ArticleActivityFragment();
+        Fragment articleActivityFragment = new ArticleActivityFragment();
         FragmentManager fragmentManager = getSupportFragmentManager();
-        fragmentManager.beginTransaction().replace(R.id.article_frame, articalActivityFragment).commit();
+        fragmentManager.beginTransaction().replace(R.id.article_frame, articleActivityFragment).commit();
     }
 
     @Override

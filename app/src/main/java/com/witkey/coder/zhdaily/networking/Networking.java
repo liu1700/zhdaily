@@ -38,14 +38,6 @@ public class Networking {
                 .cacheInMemory(true).build();
     }
 
-    private static RequestQueue getInstance() {
-        return Holder.INSTANCE;
-    }
-
-    private static DisplayImageOptions getOptions() {
-        return Holder.DISPLAY_IMAGE_OPTIONS;
-    }
-
     // GET
     public static void get(String method, Class<?> responseClass, ErrorListener errorListener, Listener listener) {
         GsonRequest request = new GsonRequest(
@@ -56,15 +48,16 @@ public class Networking {
                 listener,
                 errorListener);
 
-        getInstance().add(request);
+        Holder.INSTANCE.add(request);
     }
 
     // 使用UIL加载图片
     public static void loadImage(String imgUrl, final ImageView imageView) {
         ImageLoader imageLoader = ImageLoader.getInstance();
-        imageLoader.init(ImageLoaderConfiguration.createDefault(DailyApp.getAppContext()));
-
-        imageLoader.loadImage(imgUrl, new ImageSize(imageView.getWidth(), imageView.getHeight()), getOptions(), new ImageLoadingListener() {
+        if (!imageLoader.isInited()) {
+            imageLoader.init(ImageLoaderConfiguration.createDefault(DailyApp.getAppContext()));
+        }
+        imageLoader.loadImage(imgUrl, new ImageSize(imageView.getWidth(), imageView.getHeight()), Holder.DISPLAY_IMAGE_OPTIONS, new ImageLoadingListener() {
 
             @Override
             public void onLoadingStarted(String imageUri, View view) {

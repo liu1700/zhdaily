@@ -46,7 +46,7 @@ public class CircularImageView extends ImageView {
         canvas.drawBitmap(circularBitmap, 0, 0, null);
     }
 
-    public static Bitmap toCircularBitmap(Bitmap bitmap, int radius) {
+    private static Bitmap toCircularBitmap(Bitmap bitmap, int radius) {
         Bitmap dst;
         // 首先缩放图片到指定半径大小
         if (bitmap.getWidth() != radius || bitmap.getHeight() != radius) {

@@ -11,6 +11,7 @@
         android:layout_height="match_parent"
         android:layout_marginRight="@dimen/article_distance_mid"
         android:layout_marginEnd="@dimen/article_distance_mid"
+        android:contentDescription="@string/action_share"
         android:id="@+id/article_share"
         android:src="@drawable/ic_share_white_24dp"/>
 
@@ -19,6 +20,7 @@
         android:layout_height="match_parent"
         android:layout_marginRight="@dimen/article_distance_mid"
         android:layout_marginEnd="@dimen/article_distance_mid"
+        android:contentDescription="@string/action_like"
         android:id="@+id/article_star"
         android:src="@drawable/ic_favorite_border_white_24dp" />
 
@@ -32,7 +34,7 @@
         android:textColor="@color/white"
         android:drawableLeft="@drawable/ic_message_white_24dp"
         android:drawableStart="@drawable/ic_message_white_24dp"
-        android:text="..."/>
+        android:text="@string/tool_bar_placeholder"/>
 
     <TextView
         android:layout_width="wrap_content"
@@ -44,6 +46,6 @@
         android:textColor="@color/white"
         android:drawableLeft="@drawable/ic_thumb_up_white_24dp"
         android:drawableStart="@drawable/ic_thumb_up_white_24dp"
-        android:text="..."/>
+        android:text="@string/tool_bar_placeholder"/>
 
 </LinearLayout>

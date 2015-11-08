@@ -24,8 +24,7 @@ public class DailyApp extends Application {
     public static Context getAppContext() {
         return appContext;
     }
-    public void setAppContext(Context a) {
+    private void setAppContext(Context a) {
         appContext = a;
     }
-
 }

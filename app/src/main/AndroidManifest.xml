@@ -26,6 +26,8 @@
             android:name=".ArticleActivity"
             android:theme="@style/AppTheme.NoActionBar" >
         </activity>
+
+        <service android:name=".db.CircleDB"/>
     </application>
 
 </manifest>

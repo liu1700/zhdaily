@@ -1,9 +1,7 @@
 package com.witkey.coder.zhdaily.utils;
 
-import android.util.Log;
 import android.view.GestureDetector;
 import android.view.MotionEvent;
-import android.widget.Toast;
 
 import java.util.ArrayList;
 

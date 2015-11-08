@@ -26,8 +26,7 @@
             android:layout_alignParentBottom="true"
             android:layout_marginLeft="@dimen/article_distance_mid"
             android:layout_marginStart="@dimen/article_distance_mid"
-            android:layout_marginBottom="@dimen/article_distance_large"
-            android:text="Title"/>
+            android:layout_marginBottom="@dimen/article_distance_large"/>
 
         <TextView
             android:id="@+id/article_image_source"
@@ -38,8 +37,7 @@
             android:layout_alignParentBottom="true"
             android:layout_alignParentEnd="true"
             android:layout_alignParentRight="true"
-            android:layout_margin="@dimen/article_distance_mid"
-            android:text="Source"/>
+            android:layout_margin="@dimen/article_distance_mid"/>
 
     </RelativeLayout>
 

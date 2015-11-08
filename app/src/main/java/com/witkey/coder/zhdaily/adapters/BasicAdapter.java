@@ -11,8 +11,8 @@ import java.util.ArrayList;
  *
  */
 public abstract class BasicAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
-    public Context ctx;
-    public ArrayList<Object> dataset = new ArrayList<>();
+    Context ctx;
+    ArrayList<Object> dataset = new ArrayList<>();
 
     @Override
     abstract public RecyclerView.ViewHolder onCreateViewHolder(ViewGroup parent, int viewType);

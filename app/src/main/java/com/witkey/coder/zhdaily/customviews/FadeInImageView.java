@@ -16,7 +16,7 @@ import android.widget.ImageView;
  */
 public class FadeInImageView extends ImageView {
 
-    private static final int FADE_IN_TIME_MS = 600;
+    private static final int FADE_IN_TIME_MS = 400;
     private Context ctx;
 
     public FadeInImageView(Context context) {

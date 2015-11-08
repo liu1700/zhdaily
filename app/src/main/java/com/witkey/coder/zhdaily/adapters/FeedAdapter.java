@@ -137,6 +137,7 @@ public class FeedAdapter extends BasicAdapter {
             Story f = (Story)dataset.get(position);
             View v = ((CardViewHolder)holder).cardView;
             v.setId(position);
+            v.setTag("card");
 
             TextView title = (TextView) v.findViewById(R.id.story_title);
             TextView type = (TextView) v.findViewById(R.id.story_type);
@@ -150,12 +151,14 @@ public class FeedAdapter extends BasicAdapter {
             View v = ((DateTextViewHolder)holder).dateTextView;
             TextView date = (TextView)v.findViewById(R.id.dateText);
             date.setText((String)dataset.get(position));
+            v.setTag("date");
 
         } else if (holder instanceof FlipperViewHolder) {
             ArrayList<ImageFlipper> imageFlippers = (ArrayList<ImageFlipper>)dataset.get(position);
             View v = ((FlipperViewHolder)holder).flipperView;
             ViewFlipper viewFlipper = (ViewFlipper)v;
             ViewGroup parent = (ViewGroup)v.getParent();
+            v.setTag("flipper");
 
             // 为每个flipper设置内容
             for (ImageFlipper imageFlipper : imageFlippers) {
@@ -182,5 +185,10 @@ public class FeedAdapter extends BasicAdapter {
         } else {
             return TYPE_FEED;
         }
+    }
+
+    @Override
+    public int getItemCount() {
+        return dataset.size();
     }
 }

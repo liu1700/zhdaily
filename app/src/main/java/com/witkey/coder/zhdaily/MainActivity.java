@@ -33,7 +33,7 @@ public class MainActivity extends AppCompatActivity
 
         Fragment mainFragment = new MainFragment();
         FragmentManager fragmentManager = getSupportFragmentManager();
-        fragmentManager.beginTransaction().replace(R.id.contentFrame, mainFragment).commit();
+        fragmentManager.beginTransaction().replace(R.id.content_frame, mainFragment).commit();
     }
 
     @Override
@@ -68,8 +68,6 @@ public class MainActivity extends AppCompatActivity
 
     @Override
     public boolean onNavigationItemSelected(MenuItem item) {
-        // Handle navigation view item clicks.
-        int id = item.getItemId();
 
         DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
         drawer.closeDrawer(GravityCompat.START);
