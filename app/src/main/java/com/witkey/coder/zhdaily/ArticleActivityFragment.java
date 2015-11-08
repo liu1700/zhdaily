@@ -15,6 +15,7 @@ import com.android.volley.Response;
 import com.android.volley.VolleyError;
 import com.witkey.coder.zhdaily.adapters.ArticleAdapter;
 import com.witkey.coder.zhdaily.models.Article;
+import com.witkey.coder.zhdaily.models.ArticleExtra;
 import com.witkey.coder.zhdaily.networking.Networking;
 
 import java.util.ArrayList;
@@ -28,6 +29,9 @@ public class ArticleActivityFragment extends BaseFragment {
     private ArticleAdapter articleAdapter;
     private ArrayList<Object> dataStream = new ArrayList<>();
 
+    private TextView comments;
+    private TextView likes;
+
     public ArticleActivityFragment() {
     }
 
@@ -38,8 +42,8 @@ public class ArticleActivityFragment extends BaseFragment {
         ActionBar bar = ((AppCompatActivity) getActivity()).getSupportActionBar();
         View barView = bar.getCustomView();
 
-//        TextView comments = (TextView) barView.findViewById(R.id.article_comments);
-//        comments.setText("1");
+        comments = (TextView) barView.findViewById(R.id.article_comments);
+        likes = (TextView) barView.findViewById(R.id.article_likes);
         // 获取文章id
         Intent intent = getActivity().getIntent();
         articleId = intent.getIntExtra(TO_ARTICLE, 0);
@@ -55,14 +59,22 @@ public class ArticleActivityFragment extends BaseFragment {
     @Override
     public void onStart() {
         super.onStart();
-        retrieveArticle(articleId);
+
+        Thread articleThread = new Thread(new Runnable() {
+            @Override
+            public void run() {
+                retrieveArticle(articleId);
+                retrieveArticalExtra(articleId);
+            }
+        });
+        articleThread.start();
     }
 
     private void retrieveArticle(int id) {
         Networking.get(String.format("%s%d", Networking.ARTICLE_DETAIL, id), Article.class, new Response.ErrorListener() {
             @Override
             public void onErrorResponse(VolleyError error) {
-                Toast.makeText(DailyApp.getAppContext(), error.getMessage(), Toast.LENGTH_SHORT).show();
+                Toast.makeText(getActivity(), error.getMessage(), Toast.LENGTH_SHORT).show();
             }
         }, new Response.Listener() {
             @Override
@@ -72,6 +84,22 @@ public class ArticleActivityFragment extends BaseFragment {
 
                 articleAdapter.setDataset(dataStream);
                 articleAdapter.notifyDataSetChanged();
+            }
+        });
+    }
+
+    private void retrieveArticalExtra(int id) {
+        Networking.get(String.format("%s%d", Networking.ARTICLE_DETAIL_EXTRA, id), ArticleExtra.class, new Response.ErrorListener() {
+            @Override
+            public void onErrorResponse(VolleyError error) {
+                Toast.makeText(getActivity(), error.getMessage(), Toast.LENGTH_SHORT).show();
+            }
+        }, new Response.Listener() {
+            @Override
+            public void onResponse(Object response) {
+                ArticleExtra extra = (ArticleExtra) response;
+                comments.setText(extra.getComments());
+                likes.setText(extra.getPopularity());
             }
         });
     }

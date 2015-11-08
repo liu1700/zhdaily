@@ -23,6 +23,7 @@ import com.witkey.coder.zhdaily.R;
  */
 public class Networking {
 
+    // APIs
     private static final String BASE_URL = "http://news-at.zhihu.com/api/4/";
     public static final String FEED_STREAM = "stories/before/";
     public static final String ARTICLE_DETAIL = "story/";
@@ -30,13 +31,22 @@ public class Networking {
 
     private static class Holder{
         static final RequestQueue INSTANCE = Volley.newRequestQueue(DailyApp.getAppContext(), new OkHttpStack());
+        static final DisplayImageOptions DISPLAY_IMAGE_OPTIONS = new DisplayImageOptions.Builder()
+                .showImageOnLoading(R.drawable.ic_photo_white_36dp)
+                .showImageForEmptyUri(R.drawable.ic_photo_white_36dp)
+                .showImageOnFail(R.drawable.ic_photo_white_36dp)
+                .cacheInMemory(true).build();
     }
 
     private static RequestQueue getInstance() {
         return Holder.INSTANCE;
     }
 
+    private static DisplayImageOptions getOptions() {
+        return Holder.DISPLAY_IMAGE_OPTIONS;
+    }
 
+    // GET
     public static void get(String method, Class<?> responseClass, ErrorListener errorListener, Listener listener) {
         GsonRequest request = new GsonRequest(
                 Request.Method.GET,
@@ -49,18 +59,12 @@ public class Networking {
         getInstance().add(request);
     }
 
-    // Check the imageView type: true for network imageview, false for circle imageview
+    // 使用UIL加载图片
     public static void loadImage(String imgUrl, final ImageView imageView) {
         ImageLoader imageLoader = ImageLoader.getInstance();
         imageLoader.init(ImageLoaderConfiguration.createDefault(DailyApp.getAppContext()));
 
-        DisplayImageOptions displayImageOptions = new DisplayImageOptions.Builder()
-                .showImageOnLoading(R.drawable.ic_photo_white_36dp) // resource or drawable
-                .showImageForEmptyUri(R.drawable.ic_photo_white_36dp) // resource or drawable
-                .showImageOnFail(R.drawable.ic_photo_white_36dp)
-                .cacheInMemory(true).build();
-
-        imageLoader.loadImage(imgUrl, new ImageSize(imageView.getWidth(), imageView.getHeight()), displayImageOptions, new ImageLoadingListener() {
+        imageLoader.loadImage(imgUrl, new ImageSize(imageView.getWidth(), imageView.getHeight()), getOptions(), new ImageLoadingListener() {
 
             @Override
             public void onLoadingStarted(String imageUri, View view) {

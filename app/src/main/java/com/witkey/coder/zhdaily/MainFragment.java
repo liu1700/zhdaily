@@ -30,9 +30,7 @@ public class MainFragment extends BaseFragment {
     private FeedAdapter feedAdapter;
     private ArrayList<Object> dataStream = new ArrayList<>();
 
-    public MainFragment() {
-        // Required empty public constructor
-    }
+    public MainFragment() {}
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
@@ -40,15 +38,16 @@ public class MainFragment extends BaseFragment {
 
         View rootView = inflater.inflate(R.layout.fragment_main, container, false);
 
+        // 加入首页顶部轮播图的假数据
         ArrayList<ImageFlipper> imageFlippers = new ArrayList<>();
         imageFlippers.add(new ImageFlipper("1", "1", "1", "1"));
         imageFlippers.add(new ImageFlipper("1", "1", "2", "1"));
         imageFlippers.add(new ImageFlipper("1", "1", "3", "1"));
         dataStream.add(imageFlippers);
 
+        // 将更新操作发送到主循环的消息队列
         Handler handler = new Handler(Looper.getMainLooper());
-        // 启用线程从数据库中读取缓存好的数据流
-        handler.post(loadStoryStreamFromDB());
+        handler.post(loadStoryStream());
 
         // 设置 recycler view
         RecyclerView recyclerView = (RecyclerView) rootView.findViewById(R.id.main_view);
@@ -59,7 +58,7 @@ public class MainFragment extends BaseFragment {
         return rootView;
     }
 
-    private Runnable loadStoryStreamFromDB() {
+    private Runnable loadStoryStream() {
          return new Runnable() {
             @Override
             public void run() {
@@ -81,25 +80,17 @@ public class MainFragment extends BaseFragment {
 
     public void refresh() {
         if (dataStream.size() > 1) {
-            feedAdapter.setDataset(dataStream);
-            feedAdapter.notifyDataSetChanged();
+            update();
         } else {
             updateStream(Tool.getTomorrowDate());
         }
-    }
-
-    @Override
-    public void onStart() {
-        super.onStart();
-
-//        updateStream(Tool.getTomorrowDate());
     }
 
     private void updateStream(String date) {
         Networking.get(String.format("%s%s", Networking.FEED_STREAM, date), Stories.class, new Response.ErrorListener() {
                     @Override
                     public void onErrorResponse(VolleyError error) {
-                        Toast.makeText(DailyApp.getAppContext(), error.getMessage(), Toast.LENGTH_SHORT).show();
+                        Toast.makeText(getActivity(), error.getMessage(), Toast.LENGTH_SHORT).show();
                     }
                 }, new Response.Listener() {
                     @Override
@@ -107,13 +98,19 @@ public class MainFragment extends BaseFragment {
                         Stories stories = (Stories) response;
                         ArrayList<Story> storyArrayList = stories.getStories();
 
+                        String date = Tool.toFormatDate(stories.getDate());
+                        dataStream.add(date);
                         dataStream.addAll(storyArrayList);
+                        update();
                         CircleDB.write(stories.getDate(), storyArrayList);
-                        feedAdapter.setDataset(dataStream);
-                        feedAdapter.notifyDataSetChanged();
                     }
                 }
 
         );
+    }
+
+    private void update() {
+        feedAdapter.setDataset(dataStream);
+        feedAdapter.notifyDataSetChanged();
     }
 }

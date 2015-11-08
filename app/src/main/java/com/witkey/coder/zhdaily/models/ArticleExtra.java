@@ -21,11 +21,11 @@ public class ArticleExtra {
         this.comments = comments;
     }
 
-    public int getPopularity() {
-        return popularity;
+    public String getPopularity() {
+        return String.valueOf(popularity);
     }
 
-    public int getComments() {
-        return comments;
+    public String getComments() {
+        return String.valueOf(comments);
     }
 }

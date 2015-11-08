@@ -6,8 +6,9 @@ import android.content.Context;
 import com.witkey.coder.zhdaily.db.CircleDB;
 
 /**
- * 存储上下文
+ * 存储App上下文
  *
+ * 为需要在整个周期一直存在的服务提供上下文，例如Networking，DB
  */
 public class DailyApp extends Application {
 

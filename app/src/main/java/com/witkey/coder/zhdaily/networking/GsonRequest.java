@@ -23,7 +23,6 @@ class GsonRequest<T> extends Request<T> {
     private final Gson gson = new Gson();
     private final Class<T> responseClass;
     private final Listener<T> listener;
-    protected Map<String, String> headers;
     private final Map params;
 
     public GsonRequest(int method,

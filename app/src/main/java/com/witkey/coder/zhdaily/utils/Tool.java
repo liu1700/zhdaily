@@ -15,6 +15,7 @@ public class Tool {
     private static final SimpleDateFormat BASIC_FORMAT = new SimpleDateFormat("yyyyMMdd", Locale.CHINA);
     private static final SimpleDateFormat STROY_FORMAT = new SimpleDateFormat("MM月dd日 E", Locale.CHINA);
 
+    // 获取明日的日期，用于进行数据流请求
     public static String getTomorrowDate() {
         Calendar now = Calendar.getInstance(Locale.CHINA);
         now.add(Calendar.DAY_OF_MONTH, 1);
@@ -22,6 +23,7 @@ public class Tool {
         return BASIC_FORMAT.format(now.getTime());
     }
 
+    // 格式化显示在首页Story流中的时间格式
     public static String toFormatDate(String date) {
         Calendar now = Calendar.getInstance(Locale.CHINA);
         if (BASIC_FORMAT.format(now.getTime()).equals(date)) return "今日要闻";
