@@ -102,9 +102,4 @@ public class ArticleActivityFragment extends BaseFragment {
             }
         });
     }
-
-    @Override
-    public void onBottom() {
-
-    }
 }

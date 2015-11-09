@@ -38,7 +38,7 @@ public class ArticleActivity extends AppCompatActivity {
 
         Fragment articleActivityFragment = new ArticleActivityFragment();
         FragmentManager fragmentManager = getSupportFragmentManager();
-        fragmentManager.beginTransaction().replace(R.id.article_frame, articleActivityFragment).commit();
+        fragmentManager.beginTransaction().add(R.id.article_frame, articleActivityFragment).commit();
     }
 
     @Override

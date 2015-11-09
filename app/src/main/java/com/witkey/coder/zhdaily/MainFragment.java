@@ -14,7 +14,7 @@ import android.widget.Toast;
 
 import com.android.volley.Response;
 import com.android.volley.VolleyError;
-import com.witkey.coder.zhdaily.adapters.FeedAdapter;
+import com.witkey.coder.zhdaily.adapters.StoryAdapter;
 import com.witkey.coder.zhdaily.db.CircleDB;
 import com.witkey.coder.zhdaily.models.Stories;
 import com.witkey.coder.zhdaily.models.Story;
@@ -31,7 +31,7 @@ import in.srain.cube.views.ptr.PtrFrameLayout;
  * 主页内容Fragment
  */
 public class MainFragment extends BaseFragment {
-    private FeedAdapter feedAdapter;
+    private StoryAdapter storyAdapter;
     private ArrayList<Object> dataStream = new ArrayList<>();
     private static String oldest;
     private FloatingActionButton backToTop;
@@ -66,8 +66,8 @@ public class MainFragment extends BaseFragment {
         // 设置 recycler view
         RecyclerView recyclerView = (RecyclerView) rootView.findViewById(R.id.main_view);
         layoutManager = (LinearLayoutManager)setRecyclerViewLayoutManager(recyclerView);
-        feedAdapter = new FeedAdapter(getActivity());
-        recyclerView.setAdapter(feedAdapter);
+        storyAdapter = new StoryAdapter(getActivity());
+        recyclerView.setAdapter(storyAdapter);
 
         // 设置 recycler view 的滚动监听
         recyclerView.addOnScrollListener(new RecyclerView.OnScrollListener() {
@@ -142,13 +142,8 @@ public class MainFragment extends BaseFragment {
     }
 
     private void update() {
-        feedAdapter.setDataset(dataStream);
-        feedAdapter.notifyDataSetChanged();
-    }
-
-    @Override
-    protected void onBottom() {
-        updateStream(oldest, true);
+        storyAdapter.setDataset(dataStream);
+        storyAdapter.notifyDataSetChanged();
     }
 
     // 滚动处理逻辑
@@ -170,7 +165,7 @@ public class MainFragment extends BaseFragment {
         } else {
             if (topVisibleItemPosition + itemsInView >= currentAll) {
                 processing = true;
-                onBottom();
+                updateStream(oldest, true);
             }
         }
 

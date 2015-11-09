@@ -50,9 +50,7 @@ public abstract class BaseFragment extends Fragment {
         });
     }
 
-    protected abstract void onBottom();
-
-    protected void onRefresh(PtrFrameLayout frame){
+    void onRefresh(PtrFrameLayout frame){
         frame.refreshComplete();
     }
 

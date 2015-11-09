@@ -38,7 +38,7 @@ public class MainActivity extends AppCompatActivity
 
         Fragment mainFragment = new MainFragment();
         FragmentManager fragmentManager = getSupportFragmentManager();
-        fragmentManager.beginTransaction().replace(R.id.content_frame, mainFragment).commit();
+        fragmentManager.beginTransaction().add(R.id.content_frame, mainFragment).commit();
     }
 
     @Override
@@ -83,6 +83,5 @@ public class MainActivity extends AppCompatActivity
     protected void onDestroy() {
         super.onDestroy();
         stopService(new Intent(DailyApp.getAppContext(), CircleDB.class));
-
     }
 }

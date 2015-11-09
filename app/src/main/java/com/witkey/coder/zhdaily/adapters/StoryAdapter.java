@@ -2,6 +2,9 @@ package com.witkey.coder.zhdaily.adapters;
 
 import android.content.Context;
 import android.content.Intent;
+import android.os.Bundle;
+import android.support.v4.app.FragmentTransaction;
+import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.RecyclerView;
 import android.view.GestureDetector;
 import android.view.LayoutInflater;
@@ -13,6 +16,7 @@ import android.widget.TextView;
 import android.widget.ViewFlipper;
 
 import com.witkey.coder.zhdaily.ArticleActivity;
+import com.witkey.coder.zhdaily.ArticleActivityFragment;
 import com.witkey.coder.zhdaily.R;
 import com.witkey.coder.zhdaily.customviews.FadeInImageView;
 import com.witkey.coder.zhdaily.models.Story;
@@ -24,16 +28,16 @@ import com.witkey.coder.zhdaily.utils.GestureListener;
 import java.util.ArrayList;
 
 /**
- * FeedAdapter 填充首页feed流
+ * StoryAdapter 填充首页story stream
  */
-public class FeedAdapter extends BasicAdapter {
+public class StoryAdapter extends BasicAdapter {
     private static final int TYPE_HEADER = 0;
     private static final int TYPE_FEED = 1;
     private static final int TYPE_DATE = 2;
     private static final int FLIPPER_INTERVAL = 5000;
     private static final String TO_ARTICLE = "TO_ARTICLE";
 
-    public FeedAdapter(Context ctx) {
+    public StoryAdapter(Context ctx) {
         this.ctx = ctx;
     }
 
