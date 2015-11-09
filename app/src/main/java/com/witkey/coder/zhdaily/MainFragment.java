@@ -5,6 +5,7 @@ import android.os.Bundle;
 import android.os.Handler;
 import android.os.Looper;
 import android.support.design.widget.FloatingActionButton;
+import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -34,7 +35,10 @@ public class MainFragment extends BaseFragment {
     private ArrayList<Object> dataStream = new ArrayList<>();
     private static String oldest;
     private FloatingActionButton backToTop;
-    private RecyclerView recyclerView;
+    private boolean processing = true;
+    private int previousAll = 0;
+    private LinearLayoutManager layoutManager;
+    private PtrFrameLayout ptrFrameLayout;
 
     public MainFragment() {}
 
@@ -56,14 +60,24 @@ public class MainFragment extends BaseFragment {
         handler.post(loadStoryStream());
 
         // 设置下拉刷新
-        PtrFrameLayout ptrFrameLayout = (PtrFrameLayout) rootView.findViewById(R.id.ptr_frame);
+        ptrFrameLayout = (PtrFrameLayout) rootView.findViewById(R.id.ptr_frame);
         configPullToRefresh(ptrFrameLayout);
 
         // 设置 recycler view
-        recyclerView = (RecyclerView) rootView.findViewById(R.id.main_view);
-        setRecyclerViewLayoutManager(recyclerView);
+        RecyclerView recyclerView = (RecyclerView) rootView.findViewById(R.id.main_view);
+        layoutManager = (LinearLayoutManager)setRecyclerViewLayoutManager(recyclerView);
         feedAdapter = new FeedAdapter(getActivity());
         recyclerView.setAdapter(feedAdapter);
+
+        // 设置 recycler view 的滚动监听
+        recyclerView.addOnScrollListener(new RecyclerView.OnScrollListener() {
+            @Override
+            public void onScrolled(RecyclerView recyclerView, int dx, int dy) {
+                super.onScrolled(recyclerView, dx, dy);
+                // 处理滚动逻辑
+                processLogic(recyclerView);
+            }
+        });
 
         backToTop = (FloatingActionButton) getActivity().findViewById(R.id.back_to_top);
         backToTop.setVisibility(View.GONE);
@@ -137,16 +151,42 @@ public class MainFragment extends BaseFragment {
         updateStream(oldest, true);
     }
 
-    @Override
-    protected void onDeepIn() {
-        backToTop.setVisibility(View.VISIBLE);
-        backToTop.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                recyclerView.scrollToPosition(0);
-                backToTop.setVisibility(View.GONE);
+    // 滚动处理逻辑
+    void processLogic(final RecyclerView recyclerView) {
+        // 可见的item数量
+        int itemsInView = recyclerView.getChildCount();
+        // 总item数量
+        int currentAll = layoutManager.getItemCount();
+        // 最顶端可见item的位置
+        int topVisibleItemPosition = layoutManager.findFirstVisibleItemPosition();
+
+        // 如果正在处理中，检测当前总item数量是否多于以前的记录
+        // 如果未在处理中，检测是否到底
+        if (processing) {
+            if (currentAll > previousAll) {
+                processing = false;
+                previousAll = currentAll;
             }
-        });
+        } else {
+            if (topVisibleItemPosition + itemsInView >= currentAll) {
+                processing = true;
+                onBottom();
+            }
+        }
+
+        // 当顶部位置为显示内容的两倍时，显示回到顶部按钮
+        if (topVisibleItemPosition > itemsInView << 1) {
+            backToTop.setVisibility(View.VISIBLE);
+            backToTop.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    recyclerView.scrollToPosition(0);
+                    backToTop.setVisibility(View.GONE);
+                }
+            });
+        }
+
+        ptrFrameLayout.setEnabled(recyclerView.computeVerticalScrollOffset() == 0);
     }
 
     @Override

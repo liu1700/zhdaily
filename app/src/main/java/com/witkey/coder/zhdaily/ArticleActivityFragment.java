@@ -60,14 +60,13 @@ public class ArticleActivityFragment extends BaseFragment {
     public void onStart() {
         super.onStart();
 
-        Thread articleThread = new Thread(new Runnable() {
+        new Thread(new Runnable() {
             @Override
             public void run() {
                 retrieveArticle(articleId);
                 retrieveArticleExtra(articleId);
             }
-        });
-        articleThread.start();
+        }).start();
     }
 
     private void retrieveArticle(int id) {
@@ -108,10 +107,4 @@ public class ArticleActivityFragment extends BaseFragment {
     public void onBottom() {
 
     }
-
-    @Override
-    protected void onDeepIn() {
-
-    }
-
 }
