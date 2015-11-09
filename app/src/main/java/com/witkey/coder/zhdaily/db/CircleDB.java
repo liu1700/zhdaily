@@ -46,14 +46,19 @@ public class CircleDB extends Service {
                 .makeOrGet();
     }
 
-    public static void write(String key, Object value) {
-        try {
-            map.put(key, serialize(value));
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
-        db.compact();
-        db.commit();
+    public static void write(final String key, final Object value) {
+        new Thread(new Runnable() {
+            @Override
+            public void run() {
+                try {
+                    map.put(key, serialize(value));
+                } catch (IOException e) {
+                    e.printStackTrace();
+                }
+                db.compact();
+                db.commit();
+            }
+        }).start();
     }
 
     public static Object read(String key) {
@@ -65,10 +70,15 @@ public class CircleDB extends Service {
         }
     }
 
-    public static void delete(String key) {
-        map.remove(key);
-        db.compact();
-        db.commit();
+    public static void delete(final String key) {
+        new Thread(new Runnable() {
+            @Override
+            public void run() {
+                map.remove(key);
+                db.compact();
+                db.commit();
+            }
+        }).start();
     }
 
     // 获取Key迭代器

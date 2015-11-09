@@ -124,7 +124,6 @@ public class MainFragment extends BaseFragment {
                         CircleDB.write(stories.getDate(), storyArrayList);
                     }
                 }
-
         );
     }
 

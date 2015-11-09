@@ -84,7 +84,6 @@ public abstract class BaseFragment extends Fragment {
         int[] colors = getActivity().getResources().getIntArray(R.array.google_colors);
         header.setColorSchemeColors(colors);
         header.setLayoutParams(new PtrFrameLayout.LayoutParams(-1, -2));
-//        header.setPadding(0, Tools.dp2px(15), 0, Tools.dp2px(10));
         header.setPtrFrameLayout(ptrFrameLayout);
         ptrFrameLayout.setHeaderView(header);
         ptrFrameLayout.addPtrUIHandler(header);
