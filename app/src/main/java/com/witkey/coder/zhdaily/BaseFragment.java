@@ -4,6 +4,10 @@ import android.support.v4.app.Fragment;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 
+import in.srain.cube.views.ptr.PtrDefaultHandler;
+import in.srain.cube.views.ptr.PtrFrameLayout;
+import in.srain.cube.views.ptr.header.MaterialHeader;
+
 /**
  * Fragment基类，包含复用的函数
  *
@@ -11,6 +15,7 @@ import android.support.v7.widget.RecyclerView;
 public abstract class BaseFragment extends Fragment {
     private boolean processing = true;
     private int previousAll = 0;
+    private PtrFrameLayout ptrFrameLayout;
 
     // 设置Recyclerview
     void setRecyclerViewLayoutManager(RecyclerView recyclerView) {
@@ -66,12 +71,38 @@ public abstract class BaseFragment extends Fragment {
                 if (topVisibleItemPosition > itemsInView << 1) {
                     onDeepIn();
                 }
+
+                ptrFrameLayout.setEnabled(recyclerView.computeVerticalScrollOffset() == 0);
+            }
+        });
+    }
+
+    // 设置下拉刷新
+    void configPullToRefresh(PtrFrameLayout layout) {
+        ptrFrameLayout = layout;
+        MaterialHeader header = new MaterialHeader(getActivity());
+        int[] colors = getActivity().getResources().getIntArray(R.array.google_colors);
+        header.setColorSchemeColors(colors);
+        header.setLayoutParams(new PtrFrameLayout.LayoutParams(-1, -2));
+//        header.setPadding(0, Tools.dp2px(15), 0, Tools.dp2px(10));
+        header.setPtrFrameLayout(ptrFrameLayout);
+        ptrFrameLayout.setHeaderView(header);
+        ptrFrameLayout.addPtrUIHandler(header);
+
+        ptrFrameLayout.setPtrHandler(new PtrDefaultHandler() {
+            @Override
+            public void onRefreshBegin(PtrFrameLayout frame) {
+                onRefresh(frame);
             }
         });
     }
 
     protected abstract void onBottom();
     protected abstract void onDeepIn();
+
+    protected void onRefresh(PtrFrameLayout frame){
+        frame.refreshComplete();
+    }
 
 //    public void onChangeDate(String date){}
 }

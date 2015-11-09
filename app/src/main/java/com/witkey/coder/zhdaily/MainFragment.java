@@ -24,6 +24,8 @@ import com.witkey.coder.zhdaily.utils.Tool;
 import java.util.ArrayList;
 import java.util.Iterator;
 
+import in.srain.cube.views.ptr.PtrFrameLayout;
+
 /**
  * 主页内容Fragment
  */
@@ -52,6 +54,10 @@ public class MainFragment extends BaseFragment {
         // 将更新操作发送到主循环的消息队列
         Handler handler = new Handler(Looper.getMainLooper());
         handler.post(loadStoryStream());
+
+        // 设置下拉刷新
+        PtrFrameLayout ptrFrameLayout = (PtrFrameLayout) rootView.findViewById(R.id.ptr_frame);
+        configPullToRefresh(ptrFrameLayout);
 
         // 设置 recycler view
         recyclerView = (RecyclerView) rootView.findViewById(R.id.main_view);
@@ -108,7 +114,7 @@ public class MainFragment extends BaseFragment {
                             dataStream.add(date);
                             dataStream.addAll(storyArrayList);
                         } else {
-                            String gaPrefixInDB = ((Story)dataStream.get(2)).getGaPrefix();
+                            String gaPrefixInDB = ((Story) dataStream.get(2)).getGaPrefix();
                             dataStream.set(1, date);
                             for (int i = 0; !storyArrayList.get(i).getGaPrefix().equals(gaPrefixInDB); i++) {
                                 dataStream.add(2, storyArrayList.get(i));
@@ -128,12 +134,12 @@ public class MainFragment extends BaseFragment {
     }
 
     @Override
-    public void onBottom() {
+    protected void onBottom() {
         updateStream(oldest, true);
     }
 
     @Override
-    public void onDeepIn() {
+    protected void onDeepIn() {
         backToTop.setVisibility(View.VISIBLE);
         backToTop.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -144,7 +150,13 @@ public class MainFragment extends BaseFragment {
         });
     }
 
-//    @Override
+    @Override
+    protected void onRefresh(PtrFrameLayout frameLayout) {
+        super.onRefresh(frameLayout);
+        updateStream(Tool.getTomorrow(), false);
+    }
+
+    //    @Override
 //    public void onChangeDate(String date) {
 //        super.onChangeDate(date);
 //

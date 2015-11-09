@@ -80,18 +80,9 @@ public class MainActivity extends AppCompatActivity
     }
 
     @Override
-    protected void onPause() {
-        super.onPause();
-        stopService(new Intent(DailyApp.getAppContext(), CircleDB.class));
-    }
-
-    @Override
-    protected void onResume() {
-        super.onResume();
-    }
-
-    @Override
     protected void onDestroy() {
         super.onDestroy();
+        stopService(new Intent(DailyApp.getAppContext(), CircleDB.class));
+
     }
 }
