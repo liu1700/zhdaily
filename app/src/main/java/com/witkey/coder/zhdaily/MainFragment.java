@@ -72,7 +72,7 @@ public class MainFragment extends BaseFragment {
                 // 迭代读取数据库
                 Iterator<String> iterator = CircleDB.getKeyIterator();
                 if (!iterator.hasNext()) {
-                    updateStream(Tool.getTomorrow());
+                    updateStream(Tool.getTomorrow(), true);
                     return;
                 }
                 while (iterator.hasNext()) {
@@ -84,12 +84,12 @@ public class MainFragment extends BaseFragment {
                     dataStream.add(date);
                     dataStream.addAll(storyArrayList);
                 }
-                update();
+                updateStream(Tool.getTomorrow(), false);
             }
         };
     }
 
-    private void updateStream(String date) {
+    private void updateStream(String date, final boolean loadMore) {
         Networking.get(String.format("%s%s", Networking.FEED_STREAM, date), Stories.class, new Response.ErrorListener() {
                     @Override
                     public void onErrorResponse(VolleyError error) {
@@ -102,9 +102,18 @@ public class MainFragment extends BaseFragment {
                         ArrayList<Story> storyArrayList = stories.getStories();
 
                         String date = Tool.toFormatDate(stories.getDate());
-                        oldest = stories.getDate();
-                        dataStream.add(date);
-                        dataStream.addAll(storyArrayList);
+
+                        if (loadMore) {
+                            oldest = stories.getDate();
+                            dataStream.add(date);
+                            dataStream.addAll(storyArrayList);
+                        } else {
+                            String gaPrefixInDB = ((Story)dataStream.get(2)).getGaPrefix();
+                            dataStream.set(1, date);
+                            for (int i = 0; !storyArrayList.get(i).getGaPrefix().equals(gaPrefixInDB); i++) {
+                                dataStream.add(2, storyArrayList.get(i));
+                            }
+                        }
                         update();
                         CircleDB.write(stories.getDate(), storyArrayList);
                     }
@@ -120,7 +129,7 @@ public class MainFragment extends BaseFragment {
 
     @Override
     public void onBottom() {
-        updateStream(oldest);
+        updateStream(oldest, true);
     }
 
     @Override

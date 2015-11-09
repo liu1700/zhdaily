@@ -7,6 +7,7 @@ import android.os.IBinder;
 import android.support.annotation.Nullable;
 
 
+import com.witkey.coder.zhdaily.DailyApp;
 import com.witkey.coder.zhdaily.R;
 
 import org.mapdb.BTreeMap;
@@ -30,7 +31,7 @@ public class CircleDB extends Service {
     private static BTreeMap<String, byte[]> map;
     private static DB db;
 
-    public static void init(Context context) {
+    static void init(Context context) {
         String dbName = String.format("%s%s", context.getFilesDir(), context.getString(R.string.db_daily));
 
         db = DBMaker
@@ -94,6 +95,12 @@ public class CircleDB extends Service {
         super.onDestroy();
         // 确保数据库在app关闭时也同时关闭
         db.close();
+    }
+
+    @Override
+    public int onStartCommand(Intent intent, int flags, int startId) {
+        init(DailyApp.getAppContext());
+        return super.onStartCommand(intent, flags, startId);
     }
 
     @Nullable

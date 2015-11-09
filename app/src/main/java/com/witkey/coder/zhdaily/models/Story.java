@@ -41,6 +41,10 @@ public class Story implements Serializable {
         return type;
     }
 
+    public String getGaPrefix() {
+        return gaPrefix;
+    }
+
     public boolean isMultipic() {
         return multipic;
     }
