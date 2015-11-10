@@ -30,6 +30,7 @@ import java.util.NavigableSet;
 public class CircleDB extends Service {
     private static BTreeMap<String, byte[]> map;
     private static DB db;
+    private static final int CACHE_SIZE_FOR_ANDROID = 128;
 
     static void init(Context context) {
         String dbName = String.format("%s%s", context.getFilesDir(), context.getString(R.string.db_daily));
@@ -39,6 +40,7 @@ public class CircleDB extends Service {
                 .closeOnJvmShutdown()
                 .asyncWriteEnable()
                 .encryptionEnable("DailyDB")
+                .cacheSize(CACHE_SIZE_FOR_ANDROID)
                 .make();
         map = db.treeMapCreate(context.getString(R.string.db_daily_map))
                 .keySerializer(Serializer.STRING)
@@ -85,6 +87,11 @@ public class CircleDB extends Service {
     public static Iterator<String> getKeyIterator() {
         NavigableSet<String> set = map.descendingKeySet();
         return set.iterator();
+    }
+
+    public static String getFirstKey() {
+        Iterator<String> it = map.descendingKeySet().iterator();
+        return it.hasNext() ? it.next() : null;
     }
 
     static byte[] serialize(Object obj) throws IOException {

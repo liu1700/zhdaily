@@ -129,9 +129,19 @@ public class MainFragment extends BaseFragment {
                             dataStream.addAll(storyArrayList);
                         } else {
                             String gaPrefixInDB = ((Story) dataStream.get(2)).getGaPrefix();
-                            dataStream.set(1, date);
-                            for (int i = 0; !storyArrayList.get(i).getGaPrefix().equals(gaPrefixInDB); i++) {
-                                dataStream.add(2, storyArrayList.get(i));
+                            String newestInDB = CircleDB.getFirstKey();
+                            if (!newestInDB.equals(Tool.getToday())){
+                                dataStream.add(1, date);
+                                for (int i = 0; i < storyArrayList.size(); i++) {
+                                    dataStream.add(2, storyArrayList.get(i));
+                                }
+                            } else {
+                                dataStream.set(1, date);
+                                for (int i = 0;
+                                     !storyArrayList.get(i).getGaPrefix().equals(gaPrefixInDB);
+                                     i++) {
+                                    dataStream.add(2, storyArrayList.get(i));
+                                }
                             }
                         }
                         update();
