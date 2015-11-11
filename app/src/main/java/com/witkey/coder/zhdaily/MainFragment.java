@@ -5,6 +5,7 @@ import android.os.Bundle;
 import android.os.Handler;
 import android.os.Looper;
 import android.support.design.widget.FloatingActionButton;
+import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
@@ -25,8 +26,6 @@ import com.witkey.coder.zhdaily.utils.Tool;
 import java.util.ArrayList;
 import java.util.Iterator;
 
-import in.srain.cube.views.ptr.PtrFrameLayout;
-
 /**
  * 主页内容Fragment
  */
@@ -38,7 +37,7 @@ public class MainFragment extends BaseFragment {
     private boolean processing = true;
     private int previousAll = 0;
     private LinearLayoutManager layoutManager;
-    private PtrFrameLayout ptrFrameLayout;
+    private SwipeRefreshLayout swipeRefreshLayout;
 
     public MainFragment() {}
 
@@ -60,8 +59,8 @@ public class MainFragment extends BaseFragment {
         handler.post(loadStoryStream());
 
         // 设置下拉刷新
-        ptrFrameLayout = (PtrFrameLayout) rootView.findViewById(R.id.ptr_frame);
-        configPullToRefresh(ptrFrameLayout);
+        swipeRefreshLayout = (SwipeRefreshLayout) rootView.findViewById(R.id.ptr_frame);
+        configPullToRefresh(swipeRefreshLayout);
 
         // 设置 recycler view
         RecyclerView recyclerView = (RecyclerView) rootView.findViewById(R.id.main_view);
@@ -153,6 +152,7 @@ public class MainFragment extends BaseFragment {
     private void update() {
         storyAdapter.setDataset(dataStream);
         storyAdapter.notifyDataSetChanged();
+        swipeRefreshLayout.setRefreshing(false);
     }
 
     // 滚动处理逻辑
@@ -190,12 +190,10 @@ public class MainFragment extends BaseFragment {
             });
         }
 
-        ptrFrameLayout.setEnabled(recyclerView.computeVerticalScrollOffset() == 0);
     }
 
     @Override
-    protected void onRefresh(PtrFrameLayout frameLayout) {
-        super.onRefresh(frameLayout);
+    void refresh() {
         updateStream(Tool.getTomorrow(), false);
     }
 

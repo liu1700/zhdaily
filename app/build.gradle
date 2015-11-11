@@ -32,5 +32,4 @@ dependencies {
     compile 'com.squareup.okhttp:okhttp-urlconnection:2.5.0'
     compile 'com.nostra13.universalimageloader:universal-image-loader:1.9.3'
     compile 'org.mapdb:mapdb:2.0-beta8'
-    compile 'in.srain.cube:ultra-ptr:1.0.11'
 }

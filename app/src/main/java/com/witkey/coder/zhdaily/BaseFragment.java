@@ -1,12 +1,9 @@
 package com.witkey.coder.zhdaily;
 
 import android.support.v4.app.Fragment;
+import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
-
-import in.srain.cube.views.ptr.PtrDefaultHandler;
-import in.srain.cube.views.ptr.PtrFrameLayout;
-import in.srain.cube.views.ptr.header.MaterialHeader;
 
 /**
  * Fragment基类，包含复用的函数
@@ -33,26 +30,19 @@ public abstract class BaseFragment extends Fragment {
     }
 
     // 设置下拉刷新
-    void configPullToRefresh(PtrFrameLayout layout) {
-        MaterialHeader header = new MaterialHeader(getActivity());
+    void configPullToRefresh(final SwipeRefreshLayout layout) {
         int[] colors = getActivity().getResources().getIntArray(R.array.google_colors);
-        header.setColorSchemeColors(colors);
-        header.setLayoutParams(new PtrFrameLayout.LayoutParams(-1, -2));
-        header.setPtrFrameLayout(layout);
-        layout.setHeaderView(header);
-        layout.addPtrUIHandler(header);
+        layout.setColorSchemeColors(colors);
 
-        layout.setPtrHandler(new PtrDefaultHandler() {
+        layout.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
             @Override
-            public void onRefreshBegin(PtrFrameLayout frame) {
-                onRefresh(frame);
+            public void onRefresh() {
+                refresh();
             }
         });
     }
 
-    void onRefresh(PtrFrameLayout frame){
-        frame.refreshComplete();
-    }
+    void refresh(){};
 
 //    public void onChangeDate(String date){}
 }
