@@ -2,10 +2,13 @@ package com.witkey.coder.zhdaily;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.support.design.widget.TabLayout;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.design.widget.NavigationView;
 import android.support.v4.view.GravityCompat;
+import android.support.v4.view.PagerTitleStrip;
+import android.support.v4.view.ViewPager;
 import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBarDrawerToggle;
 import android.support.v7.app.AppCompatActivity;
@@ -13,7 +16,10 @@ import android.support.v7.widget.Toolbar;
 import android.view.Menu;
 import android.view.MenuItem;
 
+import com.witkey.coder.zhdaily.adapters.StoryPagerAdapter;
 import com.witkey.coder.zhdaily.db.CircleDB;
+
+import java.util.ArrayList;
 
 public class MainActivity extends AppCompatActivity
         implements NavigationView.OnNavigationItemSelectedListener {
@@ -36,9 +42,46 @@ public class MainActivity extends AppCompatActivity
         NavigationView navigationView = (NavigationView) findViewById(R.id.nav_view);
         navigationView.setNavigationItemSelectedListener(this);
 
-        Fragment mainFragment = new MainFragment();
-        FragmentManager fragmentManager = getSupportFragmentManager();
-        fragmentManager.beginTransaction().add(R.id.content_frame, mainFragment).commit();
+        final FragmentManager fragmentManager = getSupportFragmentManager();
+
+        // 设置首页的pager
+        final StoryPagerAdapter storyPagerAdapter = new StoryPagerAdapter(fragmentManager);
+        // 设置 demo 数据
+        ArrayList<String> demoTitle = new ArrayList<>();
+        demoTitle.add("首页");
+        demoTitle.add("用户推荐");
+        demoTitle.add("媒体专栏");
+        demoTitle.add("动漫日报");
+        demoTitle.add("互联网安全");
+        demoTitle.add("不许无聊");
+        demoTitle.add("电影日报");
+        demoTitle.add("大公司日报");
+        demoTitle.add("设计日报");
+        storyPagerAdapter.setPageTitle(demoTitle);
+
+        ViewPager viewPager = (ViewPager) findViewById(R.id.main_pager);
+        TabLayout tabLayout = (TabLayout) findViewById(R.id.main_pager_tap);
+
+        viewPager.setAdapter(storyPagerAdapter);
+        tabLayout.setupWithViewPager(viewPager);
+
+        viewPager.addOnPageChangeListener(new ViewPager.OnPageChangeListener() {
+            @Override
+            public void onPageScrolled(int position, float positionOffset, int positionOffsetPixels) {
+
+            }
+
+            @Override
+            public void onPageSelected(int position) {
+                Fragment selected = storyPagerAdapter.getItem(position);
+                fragmentManager.beginTransaction().replace(R.id.content_frame, selected).commit();
+            }
+
+            @Override
+            public void onPageScrollStateChanged(int state) {
+
+            }
+        });
     }
 
     @Override

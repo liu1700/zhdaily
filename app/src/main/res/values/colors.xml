@@ -5,6 +5,7 @@
     <color name="colorAccent">#1E88E5</color>
     <color name="blue50">#E3F2FD</color>
     <color name="white">#FFFFFF</color>
+    <color name="black">#000000</color>
 
     <!--Google Color-->
     <color name="red">#FFC93437</color>
