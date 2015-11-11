@@ -130,11 +130,10 @@ public class MainFragment extends BaseFragment {
                         } else {
                             String gaPrefixInDB = ((Story) dataStream.get(2)).getGaPrefix();
                             String newestInDB = CircleDB.getFirstKey();
+                            // 判断数据库中最新的日期是否是今天
                             if (!newestInDB.equals(Tool.getToday())){
                                 dataStream.add(1, date);
-                                for (int i = 0; i < storyArrayList.size(); i++) {
-                                    dataStream.add(2, storyArrayList.get(i));
-                                }
+                                dataStream.addAll(2, storyArrayList);
                             } else {
                                 dataStream.set(1, date);
                                 for (int i = 0;
