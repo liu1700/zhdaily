@@ -11,7 +11,7 @@
 
         <com.witkey.coder.zhdaily.customviews.FadeInImageView
             android:id="@+id/article_head_image"
-            android:src="@mipmap/ic_launcher"
+            android:src="@drawable/ic_photo_white_36dp"
             android:layout_width="fill_parent"
             android:layout_height="fill_parent"
             android:scaleType="centerCrop"

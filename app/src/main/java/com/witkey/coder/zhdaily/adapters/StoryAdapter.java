@@ -2,9 +2,6 @@ package com.witkey.coder.zhdaily.adapters;
 
 import android.content.Context;
 import android.content.Intent;
-import android.os.Bundle;
-import android.support.v4.app.FragmentTransaction;
-import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.RecyclerView;
 import android.view.GestureDetector;
 import android.view.LayoutInflater;
@@ -16,7 +13,6 @@ import android.widget.TextView;
 import android.widget.ViewFlipper;
 
 import com.witkey.coder.zhdaily.ArticleActivity;
-import com.witkey.coder.zhdaily.ArticleActivityFragment;
 import com.witkey.coder.zhdaily.R;
 import com.witkey.coder.zhdaily.customviews.FadeInImageView;
 import com.witkey.coder.zhdaily.models.Story;
@@ -81,11 +77,11 @@ public class StoryAdapter extends BasicAdapter {
         }
     }
 
-    // CardViewHolder 用于处理信息流中的feed
-    public class CardViewHolder extends RecyclerView.ViewHolder {
+    // ListViewHolder 用于处理信息流中的feed
+    public class ListViewHolder extends RecyclerView.ViewHolder {
         public final View cardView;
 
-        public CardViewHolder(View v) {
+        public ListViewHolder(View v) {
             super(v);
             cardView = v;
             cardView.setOnClickListener(new View.OnClickListener() {
@@ -119,8 +115,8 @@ public class StoryAdapter extends BasicAdapter {
         View view;
         switch (viewType) {
             case TYPE_FEED:
-                view = layoutInflater.inflate(R.layout.card_view_main, parent, false);
-                return new CardViewHolder(view);
+                view = layoutInflater.inflate(R.layout.list_view_main, parent, false);
+                return new ListViewHolder(view);
             case TYPE_DATE:
                 view = layoutInflater.inflate(R.layout.date_text_main, parent, false);
                 return new DateTextViewHolder(view);
@@ -137,9 +133,9 @@ public class StoryAdapter extends BasicAdapter {
         if(dataset.isEmpty()) return;
 
         // 根据holder种类进行数据的填充
-        if (holder instanceof CardViewHolder) {
+        if (holder instanceof ListViewHolder) {
             Story f = (Story)dataset.get(position);
-            View v = ((CardViewHolder)holder).cardView;
+            View v = ((ListViewHolder)holder).cardView;
             v.setId(position);
             v.setTag("card");
 

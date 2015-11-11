@@ -16,6 +16,7 @@ import android.widget.Toast;
 import com.android.volley.Response;
 import com.android.volley.VolleyError;
 import com.witkey.coder.zhdaily.adapters.StoryAdapter;
+import com.witkey.coder.zhdaily.customviews.DividerItemDecoration;
 import com.witkey.coder.zhdaily.db.CircleDB;
 import com.witkey.coder.zhdaily.models.Stories;
 import com.witkey.coder.zhdaily.models.Story;
@@ -64,6 +65,7 @@ public class MainFragment extends BaseFragment {
 
         // 设置 recycler view
         RecyclerView recyclerView = (RecyclerView) rootView.findViewById(R.id.main_view);
+        recyclerView.addItemDecoration(new DividerItemDecoration(getActivity()));
         layoutManager = (LinearLayoutManager)setRecyclerViewLayoutManager(recyclerView);
         storyAdapter = new StoryAdapter(getActivity());
         recyclerView.setAdapter(storyAdapter);
@@ -130,7 +132,7 @@ public class MainFragment extends BaseFragment {
                             String gaPrefixInDB = ((Story) dataStream.get(2)).getGaPrefix();
                             String newestInDB = CircleDB.getFirstKey();
                             // 判断数据库中最新的日期是否是今天
-                            if (!newestInDB.equals(Tool.getToday())){
+                            if (!newestInDB.equals(Tool.getToday())) {
                                 dataStream.add(1, date);
                                 dataStream.addAll(2, storyArrayList);
                             } else {

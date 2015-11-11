@@ -1,0 +1,44 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    android:orientation="horizontal"
+    android:layout_width="match_parent"
+    android:layout_height="@dimen/card_height">
+
+    <RelativeLayout
+        android:paddingTop="@dimen/card_distance_small"
+        android:paddingBottom="@dimen/card_distance_small"
+        android:paddingStart="@dimen/card_distance_mid"
+        android:paddingEnd="@dimen/card_distance_mid"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_weight=".85">
+
+        <TextView
+            android:id="@+id/story_title"
+            android:textSize="@dimen/card_primary_text_size"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/card_test_title_text"
+            />
+
+        <TextView
+            android:id="@+id/story_type"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentBottom="true"
+            android:textSize="@dimen/card_tag_text_size"
+            android:text="@string/card_test_type_text"/>
+
+    </RelativeLayout>
+
+    <com.witkey.coder.zhdaily.customviews.FadeInImageView
+        android:id="@+id/story_thumbnail"
+        android:layout_width="@dimen/card_image_size"
+        android:layout_height="@dimen/card_image_size"
+        android:layout_marginTop="@dimen/card_distance_small"
+        android:src="@drawable/ic_photo_white_36dp"
+        android:background="@color/white"
+        android:layout_weight=".15"/>
+
+</LinearLayout>
