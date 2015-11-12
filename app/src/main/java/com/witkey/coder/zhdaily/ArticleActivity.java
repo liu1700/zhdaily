@@ -4,6 +4,7 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
+import android.support.v4.view.ViewPager;
 import android.support.v7.app.ActionBar;
 import android.support.v7.app.ActionBar.LayoutParams;
 import android.support.v7.app.AppCompatActivity;
@@ -13,7 +14,15 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 
+import com.witkey.coder.zhdaily.adapters.ArticlePagerAdapter;
+import com.witkey.coder.zhdaily.adapters.LoopPagerAdapterWrapper;
+
 public class ArticleActivity extends AppCompatActivity {
+    private static final String TO_ARTICLE = "TO_ARTICLE";
+    private int articleId;
+    private FragmentManager fragmentManager;
+    private LoopPagerAdapterWrapper loopPagerAdapterWrapper;
+    private int swipeDirection;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -36,9 +45,57 @@ public class ArticleActivity extends AppCompatActivity {
             bar.setDisplayShowCustomEnabled(true);
         }
 
-        Fragment articleActivityFragment = new ArticleActivityFragment();
-        FragmentManager fragmentManager = getSupportFragmentManager();
-        fragmentManager.beginTransaction().add(R.id.article_frame, articleActivityFragment).commit();
+        Intent intent = getIntent();
+        articleId = intent.getIntExtra(TO_ARTICLE, 0);
+
+        fragmentManager = getSupportFragmentManager();
+        ArticlePagerAdapter articlePagerAdapter = new ArticlePagerAdapter(fragmentManager, articleId);
+        loopPagerAdapterWrapper = new LoopPagerAdapterWrapper(articlePagerAdapter);
+
+        ViewPager viewPager = (ViewPager) findViewById(R.id.article_pager);
+        viewPager.setAdapter(loopPagerAdapterWrapper);
+//        viewPager.setPageTransformer(true, new ViewPager.PageTransformer() {
+//            @Override
+//            public void transformPage(View page, float position) {
+//                if (position < -1) {
+//                    swipeDirection = -1;
+//                } else if (position > 1) {
+//                    swipeDirection = 1;
+//                }
+//            }
+//        });
+
+        viewPager.addOnPageChangeListener(new ViewPager.OnPageChangeListener() {
+            @Override
+            public void onPageScrolled(int position, float positionOffset, int positionOffsetPixels) {
+
+            }
+
+            @Override
+            public void onPageSelected(int position) {
+//                int index = DailyApp.getStoryIdList().indexOf(articleId);
+//                if (swipeDirection == -1 && index != 0) {
+//                    onPageSelect(position, index - 1);
+//                } else if (swipeDirection == 1 && index != DailyApp.getStoryIdList().size() - 1) {
+//                    onPageSelect(position, index + 1);
+//                }
+                onPageSelect(position);
+            }
+
+            @Override
+            public void onPageScrollStateChanged(int state) {
+            }
+        });
+    }
+
+    void onPageSelect(int position) {
+        Fragment viewing = ((ArticlePagerAdapter) loopPagerAdapterWrapper.getRealAdapter())
+                .getItem(position);
+        Bundle arg = viewing.getArguments();
+        // Demo
+        arg.putInt(TO_ARTICLE, articleId);
+        viewing.setArguments(arg);
+        fragmentManager.beginTransaction().replace(R.id.article_frame, viewing).commit();
     }
 
     @Override

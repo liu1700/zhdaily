@@ -8,7 +8,7 @@ import java.util.ArrayList;
 /**
  * 首页Story类
  */
-public class Story implements Serializable {
+public class Story {
     private int id;
     @SerializedName("ga_prefix")
     private String gaPrefix;

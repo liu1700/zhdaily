@@ -104,6 +104,8 @@ public class MainFragment extends BaseFragment {
                     oldest = d;
                     dataStream.add(date);
                     dataStream.addAll(storyArrayList);
+                    // 存储文章id
+                    storeId(storyArrayList, true);
                 }
                 updateStream(Tool.getTomorrow(), false);
             }
@@ -144,6 +146,7 @@ public class MainFragment extends BaseFragment {
                                 }
                             }
                         }
+                        storeId(storyArrayList, loadMore);
                         update();
                         CircleDB.write(stories.getDate(), storyArrayList);
                     }
@@ -186,7 +189,7 @@ public class MainFragment extends BaseFragment {
             backToTop.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
-                    recyclerView.scrollToPosition(0);
+                    recyclerView.smoothScrollToPosition(0);
                     backToTop.setVisibility(View.GONE);
                 }
             });
@@ -197,6 +200,36 @@ public class MainFragment extends BaseFragment {
     @Override
     void refresh() {
         updateStream(Tool.getTomorrow(), false);
+    }
+
+    void storeId(final ArrayList<Story> storyArrayList, final boolean loadMore) {
+        new Thread(new Runnable() {
+            @Override
+            public void run() {
+                synchronized (this) {
+                    ArrayList<Integer> list = DailyApp.getStoryIdList();
+                    ArrayList<Integer> tempList = new ArrayList<>();
+
+                    int newestArticleId = list.isEmpty() ? 0 : list.get(0);
+
+                    for (int i = 0 ; i < storyArrayList.size(); i++) {
+                        tempList.add(storyArrayList.get(i).getId());
+                    }
+
+                    if (!loadMore && !tempList.contains(newestArticleId)){
+                        DailyApp.addAllIdAt(0, tempList);
+                    } else if(!loadMore && tempList.contains(newestArticleId)) {
+                        int i = 0;
+                        while (tempList.get(i) != newestArticleId) {
+                            DailyApp.addStoryIdAt(0, tempList.get(i));
+                            i++;
+                        }
+                    } else {
+                        DailyApp.storeAllIdsToList(tempList);
+                    }
+                }
+            }
+        }).start();
     }
 
     //    @Override

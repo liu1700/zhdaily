@@ -45,8 +45,8 @@ public class ArticleActivityFragment extends BaseFragment {
         comments = (TextView) barView.findViewById(R.id.article_comments);
         likes = (TextView) barView.findViewById(R.id.article_likes);
         // 获取文章id
-        Intent intent = getActivity().getIntent();
-        articleId = intent.getIntExtra(TO_ARTICLE, 0);
+        Bundle arg = this.getArguments();
+        articleId = arg.getInt(TO_ARTICLE);
 
         RecyclerView recyclerView = (RecyclerView) rootView.findViewById(R.id.article_view);
         setRecyclerViewLayoutManager(recyclerView);

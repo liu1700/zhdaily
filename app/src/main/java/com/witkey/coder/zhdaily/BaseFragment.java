@@ -42,7 +42,7 @@ public abstract class BaseFragment extends Fragment {
         });
     }
 
-    void refresh(){};
+    void refresh(){}
 
 //    public void onChangeDate(String date){}
 }

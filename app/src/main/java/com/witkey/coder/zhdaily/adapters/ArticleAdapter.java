@@ -55,14 +55,6 @@ public class ArticleAdapter extends BasicAdapter  {
         sb.append(article.getCss().get(0));
         sb.append("\" type=\"text/css\" rel=\"stylesheet\"/></head><body>");
 
-//        我猜测有可能是这种做法
-//        String b = article.getBody().replace("<div class=\"img-place-holder\"></div>",
-//                "<div class=\"img-wrap\">" +
-//                        "<img src=\"" + article.getImage() + "\">" +
-//                        "<span class=\"headline-title\">" + article.getTitle() + "</span>" +
-//                        "<span class=\"img-source\">" + article.getImageSource() + "</span>" +
-//                        "</div>");
-
         String b = article.getBody().replace("<div class=\"img-place-holder\"></div>","");
         sb.append(b);
         sb.append("</body></html>");

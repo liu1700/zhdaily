@@ -3,7 +3,6 @@ package com.witkey.coder.zhdaily.adapters;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentPagerAdapter;
-import android.support.v4.app.FragmentStatePagerAdapter;
 
 import com.witkey.coder.zhdaily.MainFragment;
 
@@ -14,10 +13,11 @@ import java.util.ArrayList;
  *
  */
 public class StoryPagerAdapter extends FragmentPagerAdapter {
-    private ArrayList<String> pageTitle;
+    public ArrayList<String> pageTitle;
 
     public StoryPagerAdapter(FragmentManager fm) {
         super(fm);
+        pageTitle = new ArrayList<>();
     }
 
     @Override
