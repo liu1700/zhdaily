@@ -56,8 +56,7 @@ public class MainFragment extends BaseFragment {
         dataStream.add(imageFlippers);
 
         // 将更新操作发送到主循环的消息队列
-        Handler handler = new Handler(Looper.getMainLooper());
-        handler.post(loadStoryStream());
+        getActivity().runOnUiThread(loadStoryStream());
 
         // 设置下拉刷新
         swipeRefreshLayout = (SwipeRefreshLayout) rootView.findViewById(R.id.ptr_frame);
@@ -104,8 +103,6 @@ public class MainFragment extends BaseFragment {
                     oldest = d;
                     dataStream.add(date);
                     dataStream.addAll(storyArrayList);
-                    // 存储文章id
-                    storeId(storyArrayList, true);
                 }
                 updateStream(Tool.getTomorrow(), false);
             }
@@ -131,7 +128,7 @@ public class MainFragment extends BaseFragment {
                             dataStream.add(date);
                             dataStream.addAll(storyArrayList);
                         } else {
-                            String gaPrefixInDB = ((Story) dataStream.get(2)).getGaPrefix();
+                            int neweastIdInDB = ((Story) dataStream.get(2)).getId();
                             String newestInDB = CircleDB.getFirstKey();
                             // 判断数据库中最新的日期是否是今天
                             if (!newestInDB.equals(Tool.getToday())) {
@@ -140,13 +137,12 @@ public class MainFragment extends BaseFragment {
                             } else {
                                 dataStream.set(1, date);
                                 for (int i = 0;
-                                     !storyArrayList.get(i).getGaPrefix().equals(gaPrefixInDB);
+                                     storyArrayList.get(i).getId() != neweastIdInDB;
                                      i++) {
                                     dataStream.add(2, storyArrayList.get(i));
                                 }
                             }
                         }
-                        storeId(storyArrayList, loadMore);
                         update();
                         CircleDB.write(stories.getDate(), storyArrayList);
                     }
@@ -200,36 +196,6 @@ public class MainFragment extends BaseFragment {
     @Override
     void refresh() {
         updateStream(Tool.getTomorrow(), false);
-    }
-
-    void storeId(final ArrayList<Story> storyArrayList, final boolean loadMore) {
-        new Thread(new Runnable() {
-            @Override
-            public void run() {
-                synchronized (this) {
-                    ArrayList<Integer> list = DailyApp.getStoryIdList();
-                    ArrayList<Integer> tempList = new ArrayList<>();
-
-                    int newestArticleId = list.isEmpty() ? 0 : list.get(0);
-
-                    for (int i = 0 ; i < storyArrayList.size(); i++) {
-                        tempList.add(storyArrayList.get(i).getId());
-                    }
-
-                    if (!loadMore && !tempList.contains(newestArticleId)){
-                        DailyApp.addAllIdAt(0, tempList);
-                    } else if(!loadMore && tempList.contains(newestArticleId)) {
-                        int i = 0;
-                        while (tempList.get(i) != newestArticleId) {
-                            DailyApp.addStoryIdAt(0, tempList.get(i));
-                            i++;
-                        }
-                    } else {
-                        DailyApp.storeAllIdsToList(tempList);
-                    }
-                }
-            }
-        }).start();
     }
 
     //    @Override

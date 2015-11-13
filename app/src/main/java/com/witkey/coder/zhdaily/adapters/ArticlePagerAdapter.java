@@ -6,7 +6,6 @@ import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentPagerAdapter;
 
 import com.witkey.coder.zhdaily.ArticleActivityFragment;
-import com.witkey.coder.zhdaily.DailyApp;
 
 /**
  * Article页Pager
